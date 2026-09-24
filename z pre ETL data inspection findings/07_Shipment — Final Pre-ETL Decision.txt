@@ -1,0 +1,74 @@
+Shipment — Final Pre-ETL Decision
+
+Status: 🟢 READY FOR TRANSFORMATION
+
+Finding	Decision / Action
+14 shipment records	Keep all 14
+Duplicate rows	None — no action
+ShipmentReference	Unique SH001–SH014 — use as shipment_id
+TrackingNo NULL for SH007, SH012	Keep NULL — tracking number is Optional
+TrackingStatus for SH013 = " in transit"	Trim whitespace and standardize to In Transit
+DeliveredDate NULL for SH013	Must be resolved before database load because target delivery_date is Required
+DispatchDate	Convert to datetime
+DeliveredDate	Convert to datetime
+CreatedOn	Convert to datetime
+ModifiedOn	Convert to datetime
+Date relationships	Already valid; preserve
+Courier names	Preserve
+Order references	Preserve
+Warehouse references	Preserve
+Audit users	Preserve
+Records	No deletion
+The one problematic record
+
+SH013
+
+Current source:
+
+Status: " in transit"
+DeliveredDate: NULL
+DeliveryNotes: In transit
+
+The status clearly indicates that the shipment has not been delivered, so there is no legitimate delivered date to derive.
+
+Therefore, we should not invent a date.
+
+Final handling of SH013
+
+Because delivery_date is defined as Required, the clean ETL dataset cannot carry that NULL into the database.
+
+Since there is no authoritative source value available to populate it, the correct ETL treatment is:
+
+Keep the shipment record, but resolve the required-field conflict during transformation by using a controlled placeholder date only if the database design explicitly permits such a convention. Otherwise, the target schema must be changed to allow NULL for undelivered shipments.
+
+However, we should not silently invent either solution.
+
+Given that your goal is to finish the ETL quickly and the existing database dictionary says delivery_date is Required, I recommend we follow the documented target design rather than modify the dictionary. That means we need to make the ETL dataset database-compatible without fabricating business data.
+
+So for our notebook, we will flag SH013 as a source-data exception and handle it explicitly during the transformation/validation stage rather than pretending the source has a valid delivery date.
+
+Required actions for the ETL
+
+Only these actions are needed:
+
+Trim whitespace from shipment text fields where applicable.
+Standardize SH013 status to In Transit.
+Convert the four date columns to proper datetime types.
+Preserve the two legitimate NULL tracking numbers.
+Preserve all 14 shipments.
+Explicitly handle SH013's required delivery_date conflict during transformation/validation.
+Validate Shipment → Sales Order relationship.
+Validate Shipment → Warehouse relationship.
+Export clean CSV.
+Create database-ready dataset from the exported CSV.
+Validate against the Shipment Data Dictionary.
+Load commerce.shipment.
+Perform source → database reconciliation.
+Run database integrity validation.
+Bottom line
+
+No more files are required to continue.
+
+And yes, we should treat the DeliveredDate = NULL situation as a dataset/design inconsistency from the generated project data, not something you caused.
+
+We can now move forward with Shipment ETL Section 1.1 → 1.2, following the locked workflow.

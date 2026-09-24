@@ -1,0 +1,21 @@
+PaymentReference,SourceOrderReference,PaymentDate,PaymentMethod,PaymentStatus,Amount,GatewayTransactionID,PaymentNotes,CreatedOn,CreatedByUser,ModifiedOn,ModifiedByUser
+PAY001,SO001,2026-07-05,Visa,Successful,2000,TXN001,Partial,2026-07-05,admin,2026-07-05,admin
+PAY002,SO001,2026-07-05,Visa,Successful,1198,TXN002,Completed,2026-07-05,admin,2026-07-05,admin
+PAY003,SO002,2026-07-06,Credit Card,Successful,2199,TXN003,Paid,2026-07-06,admin,2026-07-06,admin
+PAY004,SO003,2026-07-07,Cash on Delivery,Successful,1399,TXN004,Paid,2026-07-07,admin,2026-07-07,admin
+PAY005,SO004,2026-07-08,Visa,Successful,4298,TXN005,Paid,2026-07-08,admin,2026-07-08,admin
+PAY006,SO005,2026-07-09,Mastercard,Successful,3448,TXN006,Paid,2026-07-09,admin,2026-07-09,admin
+PAY007,SO006,2026-07-10,Cash on Delivery,Pending,0,TXN007,Awaiting payment,2026-07-10,admin,2026-07-10,admin
+PAY008,SO007,2026-07-11,Visa,Successful,3078,TXN008,Paid,2026-07-11,admin,2026-07-11,admin
+PAY009,SO008,2026-07-12,Credit Card,Successful,1599,TXN009,Paid,2026-07-12,admin,2026-07-12,admin
+PAY010,SO009,2026-07-13,Visa,Successful,399,TXN010,Paid,2026-07-13,admin,2026-07-13,admin
+PAY011,SO010,2026-07-14,Credit Card,Failed,0,TXN011,Payment failed,2026-07-14,admin,2026-07-14,admin
+PAY012,SO011,2026-07-15,Cash on Delivery,Successful,499,TXN012,Paid,2026-07-15,admin,2026-07-15,admin
+PAY013,SO012,2026-07-16,Visa,Successful,699,TXN013,Paid,2026-07-16,admin,2026-07-16,admin
+PAY014,SO013,2026-07-17,Mastercard,Successful,3298,TXN014,Paid,2026-07-17,admin,2026-07-17,admin
+PAY015,SO014,2026-07-18,Cash on Delivery,Successful,179,TXN015,Paid,2026-07-18,admin,2026-07-18,admin
+PAY016,SO015,2026-07-19,Visa,Successful,3598,TXN016,Paid,2026-07-19,admin,2026-07-19,admin
+PAY017,SO016,2026-07-20,Visa,Successful,699,TXN017,Paid,2026-07-20,admin,2026-07-20,admin
+PAY018,SO017,2026-07-21,Credit Card,Successful,499,TXN018,Paid,2026-07-21,admin,2026-07-21,admin
+PAY019,SO018,2026-07-22,Mastercard,Successful,3899,TXN019,Paid,2026-07-22,admin,2026-07-22,admin
+PAY020,SO019,2026-07-23,Cash on Delivery,Pending,0,TXN020,Awaiting payment,2026-07-23,admin,2026-07-23,admin

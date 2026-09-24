@@ -1,0 +1,4 @@
+WarehouseCode,WarehouseName,WarehouseType,Address,City,Country,ManagerName,ActiveFlag,CreatedOn,CreatedByUser,ModifiedOn,ModifiedByUser
+WH001,Dubai Main Warehouse,General Storage,"Al Quoz, Dubai",Dubai,UAE,Ahmed Saleh,True,2026-07-01,admin,2026-07-15,admin
+WH002, Abu Dhabi Warehouse ,General Storage,"Mussafah, Abu Dhabi",Abu Dhabi,UAE,Fatima Noor,True,2026-07-02,admin,2026-07-15,admin
+WH003,Sharjah Returns Hub,Returns,Sharjah Industrial Area,Sharjah,UAE,Rashid Khan,True,2026-07-03,admin,2026-07-14,admin

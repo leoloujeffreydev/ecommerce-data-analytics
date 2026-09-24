@@ -1,0 +1,553 @@
+This is our next dataset: [DATASET NAME].
+
+Before we start the ETL workflow, do NOT immediately clean, transform, modify, rewrite, or create code for the dataset.
+
+First, perform a complete data inspection and analyst review to identify all potential data-quality issues and determine what cleaning, transformation, or business decisions may be required.
+
+The goal at this stage is ONLY to understand the dataset and identify the correct actions before making any changes.
+
+============================================================
+1. UNDERSTAND THE DATASET
+============================================================
+
+First, inspect and identify:
+
+- Dataset name
+- Number of rows
+- Number of columns
+- Column names
+- Current data types
+- General purpose of the dataset
+- Dataset grain
+
+Determine what one row represents.
+
+For example:
+
+- One customer per row
+- One product per row
+- One marketing campaign per row
+- One transaction per row
+
+Do not assume the dataset grain. Confirm it from the data and available documentation.
+
+============================================================
+2. INITIAL DATA INSPECTION
+============================================================
+
+Perform a complete initial inspection of the dataset.
+
+Check:
+
+- DataFrame shape
+- Column names
+- Data types
+- Sample records
+- First and last records where useful
+- General structure
+- Obvious formatting problems
+
+Identify any immediately visible issues.
+
+============================================================
+3. DATA PROFILING
+============================================================
+
+Perform appropriate profiling for the dataset.
+
+Check for:
+
+- Missing values
+- Null values
+- Empty strings
+- Whitespace-only values
+- Duplicate rows
+- Duplicate identifiers
+- Unique value counts
+- Unexpected values
+- Inconsistent values
+- Value distributions
+- Minimum and maximum values where applicable
+- Date ranges where applicable
+
+Do not rely only on summary statistics.
+
+Inspect the actual values when necessary.
+
+============================================================
+4. COLUMN-BY-COLUMN ANALYSIS
+============================================================
+
+Review EVERY column individually.
+
+For each column, determine:
+
+- Column name
+- Current datatype
+- Actual values and patterns
+- Missing value situation
+- Formatting consistency
+- Whether the values appear valid
+- Whether cleaning is required
+- Whether transformation is required
+- Whether a decision is required before changing anything
+
+Do not assume that a column is clean simply because it has no missing values.
+
+============================================================
+5. CHECK FOR COMMON DATA QUALITY ISSUES
+============================================================
+
+Thoroughly check for:
+
+TEXT ISSUES:
+- Leading whitespace
+- Trailing whitespace
+- Multiple unnecessary spaces
+- Empty strings
+- Whitespace-only values
+- Inconsistent capitalization
+- Inconsistent spelling
+- Inconsistent naming
+- Special or hidden characters
+- Unexpected text values
+
+IDENTIFIER ISSUES:
+- Duplicate IDs
+- Missing IDs
+- Inconsistent ID formatting
+- IDs incorrectly converted to numbers
+- Leading zeros that must be preserved
+
+NUMERIC ISSUES:
+- Incorrect datatype
+- Mixed numeric and text values
+- Negative values where they may not be valid
+- Impossible values
+- Suspicious outliers
+- Unexpected decimal formatting
+
+BOOLEAN / STATUS ISSUES:
+- Multiple representations of the same value
+
+For example:
+
+Yes / YES / yes / Y / True / 1
+
+or:
+
+No / NO / no / N / False / 0
+
+Do not standardize automatically unless the correct business meaning is clear.
+
+DATE ISSUES:
+- Incorrect date datatype
+- Mixed date formats
+- Invalid dates
+- Missing dates
+- Unexpected future dates
+- Suspicious historical dates
+- Incorrect relationships between dates
+
+CATEGORY / STATUS ISSUES:
+- Inconsistent category names
+- Misspellings
+- Different capitalization
+- Duplicate categories with different formatting
+- Unexpected categories
+- Values that may require business decisions
+
+============================================================
+6. INDEPENDENT ANALYST REVIEW
+============================================================
+
+Do not rely only on automated profiling.
+
+Perform an independent analyst review of the dataset.
+
+Look for:
+
+- Suspicious records
+- Business logic inconsistencies
+- Relationships between columns that do not make sense
+- Values that are technically valid but suspicious
+- Potential incorrect source data
+- Possible transformation risks
+- Anything automated profiling may not detect
+
+If something is suspicious but cannot be confirmed as incorrect, flag it for review instead of changing it automatically.
+
+============================================================
+7. ISSUE CLASSIFICATION
+============================================================
+
+After the complete inspection, classify every identified issue into one of these categories:
+
+A. DEFINITELY REQUIRES CLEANING
+
+Issues that can safely be corrected without changing business meaning.
+
+Examples may include:
+
+- Leading/trailing whitespace
+- Empty strings converted to missing values
+- Clearly inconsistent formatting
+- Correctable datatype formatting
+
+B. REQUIRES TRANSFORMATION
+
+Changes required to prepare the dataset properly.
+
+For each transformation, explain:
+
+- What will change
+- Why it needs to change
+- The expected result
+- Whether business meaning is preserved
+
+C. REQUIRES ANALYST / BUSINESS DECISION
+
+Issues where the correct action cannot be assumed.
+
+Examples:
+
+- Suspicious values
+- Unexpected categories
+- Missing important information
+- Possible duplicates
+- Conflicting records
+- Unclear status values
+
+DO NOT automatically change these.
+
+Clearly explain the decision that needs to be made.
+
+D. SHOULD NOT BE CHANGED
+
+Identify values or issues that may look unusual but should remain unchanged because there is no justified reason to modify them.
+
+============================================================
+8. PROPOSED CLEANING PLAN
+============================================================
+
+Create a clear proposed cleaning and transformation plan.
+
+For every proposed action, provide:
+
+Issue:
+[Describe the problem]
+
+Column(s):
+[List affected columns]
+
+Proposed Action:
+[Exactly what should be done]
+
+Reason:
+[Why this is the correct action]
+
+Risk:
+[Any risk of changing business meaning]
+
+Validation:
+[How we will confirm the transformation was successful]
+
+Do NOT apply the transformations yet.
+
+============================================================
+9. TRANSFORMATION DECISIONS REQUIRED
+============================================================
+
+Clearly list all decisions that require my confirmation before we proceed.
+
+For each decision, provide:
+
+- The issue
+- The affected column(s)
+- Available options if applicable
+- Your recommendation
+- Why you recommend it
+
+Separate these clearly from transformations that are safe to perform automatically.
+
+============================================================
+10. FINAL PRE-ETL INSPECTION REPORT
+============================================================
+
+Before proceeding to the actual ETL transformation stage, provide a clear final summary containing:
+
+DATASET OVERVIEW
+- Dataset name
+- Row count
+- Column count
+- Dataset grain
+
+CONFIRMED ISSUES
+- List all confirmed data-quality issues
+
+SAFE CLEANING ACTIONS
+- List transformations that can be safely performed
+
+DECISIONS REQUIRED
+- List all issues requiring analyst/business decisions
+
+ITEMS THAT SHOULD REMAIN UNCHANGED
+- List anything that should not be modified
+
+PROPOSED TRANSFORMATION PLAN
+- List the recommended actions in the correct order
+
+VALIDATION PLAN
+- Explain what should be validated after transformations
+
+FINAL STATUS
+
+End with ONLY one of the following:
+
+READY FOR TRANSFORMATION DECISIONS
+
+This means all issues have been inspected and we can now review and approve the proposed transformations.
+
+or
+
+NOT READY FOR TRANSFORMATION
+
+This means important information or decisions are still missing.
+
+Clearly explain exactly what is needed before proceeding.
+
+============================================================
+IMPORTANT RULES
+============================================================
+
+- Do not transform or clean the data yet.
+- Do not silently modify any values.
+- Do not delete records without a justified reason.
+- Do not assume suspicious data is incorrect.
+- Do not copy cleaning rules from previous datasets unless this dataset has the same confirmed issue.
+- Inspect every column.
+- Review both automated profiling results and actual data values.
+- Flag uncertainty instead of guessing.
+- Preserve the original business meaning of the data.
+- Every proposed transformation must have a reason and validation method.
+
+The goal is:
+
+INSPECT → IDENTIFY ISSUES → ANALYZE → CLASSIFY →
+PROPOSE CLEANING → IDENTIFY REQUIRED DECISIONS → STOP
+
+We will only proceed with transformations after reviewing and approving the findings and decisions.
+
+
+============================================================
+REFERENCE AND CROSS-CHECK REQUIREMENT
+============================================================
+
+This Pre-ETL Inspection Report will be used as an independent
+reference during the actual ETL notebook development.
+
+When performing the dataset inspection, profiling, analyst review,
+and transformation decision sections inside the notebook, compare
+the notebook findings against this Pre-ETL Inspection Report.
+
+The purpose is to confirm that:
+
+- The same issues are identified.
+- No confirmed issue is accidentally missed.
+- Any additional issues discovered during coding are documented.
+- Differences between the pre-inspection findings and notebook
+  findings are investigated.
+- Transformation decisions remain consistent with the confirmed
+  findings.
+
+Do not blindly force the notebook findings to match the
+Pre-ETL Inspection Report.
+
+If there is a difference, investigate the reason and determine
+which finding is correct.
+
+The Pre-ETL Inspection Report is an independent quality-control
+reference and cross-check for the actual notebook ETL analysis.
+
+============================================================
+EXECUTIVE SUMMARY OF FINDINGS
+============================================================
+
+After completing the full inspection, provide a separate EASY-TO-READ
+SUMMARY OF FINDINGS.
+
+This summary must be concise and easy to review while we are working
+inside the ETL notebook.
+
+Use the following exact structure:
+
+# Summary of Findings — [DATASET NAME]
+
+## Dataset Overview
+- Rows:
+- Columns:
+- Dataset grain:
+- Potential Primary Key:
+
+## Confirmed Data Quality Results
+
+Clearly summarize the results using simple statements.
+
+For example:
+
+### ✅ No missing values
+[Short explanation]
+
+### ⚠️ Whitespace issues found
+[Affected columns and short explanation]
+
+### ⚠️ Duplicate IDs found
+[Affected column and number of duplicates]
+
+### ✅ Dates are valid
+[Short explanation]
+
+Only include categories relevant to the dataset.
+
+## Important Findings That Are NOT Issues
+
+Clearly identify unusual findings that were investigated but should
+NOT be changed.
+
+For each item:
+
+- What was found
+- Why it is not considered a data-quality issue
+- Why it should remain unchanged
+
+## Required Cleaning
+
+List ONLY confirmed cleaning actions.
+
+If none are required, clearly state:
+
+**None.**
+
+Examples:
+
+- Trim leading/trailing whitespace from [Column]
+- Standardize confirmed inconsistent values in [Column]
+- Convert empty strings to missing values
+
+## Required Transformation
+
+List ONLY transformations required based on confirmed findings.
+
+For each transformation:
+
+- Column(s)
+- Required action
+- Short reason
+
+## Decisions Required
+
+List ONLY issues that require analyst/business confirmation.
+
+If none are required, clearly state:
+
+**None identified.**
+
+## Items That Must Remain Unchanged
+
+List important values or records that were reviewed and should not be
+modified.
+
+## MANDATORY DATATYPE TRANSFORMATION REVIEW
+
+During every Pre-ETL Inspection and ETL workflow, you must separately review:
+
+1. The CURRENT source datatype.
+2. The BUSINESS meaning of the column.
+3. The REQUIRED clean/working dataset datatype.
+4. The APPROVED target database datatype.
+
+Do not assume that a valid value means no transformation is required.
+
+A column may contain valid values but still require datatype transformation.
+
+Examples:
+
+- Valid date strings → may still require conversion to datetime.
+- Numeric values stored as text → may require numeric conversion.
+- Boolean values stored as text → may require boolean conversion.
+- Identifier values → may need to remain text even if they contain numbers.
+
+For every detected date, numeric, boolean, or other typed field, explicitly classify it as:
+
+A. No transformation required
+B. Datatype conversion required
+C. Value cleaning required
+D. Both value cleaning and datatype conversion required
+
+Dates must ALWAYS receive a separate review covering:
+
+- Date value validity
+- Invalid dates
+- Missing dates
+- Mixed date formats
+- Ambiguous date formats
+- Future dates
+- Business date relationships
+- Current source datatype
+- Required working/clean datatype
+- Target database datatype
+- Whether datatype conversion is required
+
+IMPORTANT:
+A date field passing all data-quality checks does NOT automatically mean
+that no transformation is required.
+
+The analyst must explicitly state whether the date column needs conversion
+before the dataset can be considered transformation-ready.
+
+## TRANSFORMATION READINESS CHECKPOINT — MANDATORY
+
+Before starting Section 2: Transform, create a mandatory
+"Transformation Readiness Checklist".
+
+For every column, confirm:
+
+- Source datatype
+- Target/working datatype
+- Value cleaning required? Yes/No
+- Datatype conversion required? Yes/No
+- Transformation approved? Yes/No
+
+Section 2 must NOT begin until all columns requiring datatype
+conversion or value cleaning have been explicitly identified.
+
+Do not rely only on profiler issues.
+Datatype transformations must be reviewed independently from
+data-quality issues.
+
+
+## Final Conclusion
+
+Give a short and clear conclusion in plain language.
+
+Then provide:
+
+### Status:
+🟢 READY FOR TRANSFORMATION DECISIONS
+
+or
+
+🔴 NOT READY FOR TRANSFORMATION
+
+IMPORTANT:
+
+- Keep this summary concise and easy to read.
+- Do not repeat the full detailed inspection.
+- Do not include unnecessary technical details.
+- Clearly separate confirmed issues from things that were investigated
+  but are NOT issues.
+- Do not hide important findings inside long paragraphs.
+- Use checkmarks (✅), warnings (⚠️), and clear headings where useful.
+- This summary will be used as a QUICK REFERENCE and CROSS-CHECK
+  while we perform the actual analysis and coding inside the ETL
+  notebook.

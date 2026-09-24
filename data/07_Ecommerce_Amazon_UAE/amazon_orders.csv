@@ -1,0 +1,8 @@
+SourceSystem,SourceOrderID,SourceOrderIDInternal,CustomerCode,CampaignCode,OrderDate,OrderStatus,ShipToAddress,BillToAddress,PaymentMethod,OrderGrossAmount,OrderNotes,CreatedOn,CreatedByUser,ModifiedOn,ModifiedByUser
+Amazon UAE,AMAZON-SO008,SO008,C008,,2026-07-12,Completed,"Deira, Dubai","Deira, Dubai",Credit Card,1599,,2026-07-12,admin,2026-07-12,admin
+Amazon UAE,AMAZON-SO009,SO009,C009,CAM001,2026-07-13,Completed,"Al Barsha, Dubai","Al Barsha, Dubai",Visa,399,,2026-07-13,admin,2026-07-13,admin
+Amazon UAE,AMAZON-SO010,SO010,C010,,2026-07-14,Cancelled,"Khalifa City, Abu Dhabi","Khalifa City, Abu Dhabi",Credit Card,449,,2026-07-14,admin,2026-07-14,admin
+Amazon UAE,AMAZON-SO011,SO011,C011,CAM004,2026-07-15,Completed,"Bur Dubai, Dubai","Bur Dubai, Dubai",Cash on Delivery,499,,2026-07-15,admin,2026-07-15,admin
+Amazon UAE,AMAZON-SO012,SO012,C012,,2026-07-16,Completed,"Ajman City, Ajman","Ajman City, Ajman",Visa,699,,2026-07-16,admin,2026-07-16,admin
+Amazon UAE,AMAZON-SO013,SO013,C013,CAM002,2026-07-17,Completed,"Business Bay, Dubai","Business Bay, Dubai",Mastercard,3298,,2026-07-17,admin,2026-07-17,admin
+Amazon UAE,AMAZON-SO014,SO014,C014,,2026-07-18,Completed,"Al Qusais, Dubai","Al Qusais, Dubai",Cash on Delivery,179,,2026-07-18,admin,2026-07-18,admin

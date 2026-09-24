@@ -1,0 +1,84 @@
+Summary of Findings — Sales Order Item
+Dataset Overview
+Rows: 26
+Columns: 13
+Dataset grain: One Sales Order Item / Order Line per row
+Potential Primary Key: SourceLineID
+Confirmed Data Quality Results
+✅ No missing values
+
+All 26 records have complete values across all 13 columns.
+
+✅ No exact duplicate rows
+
+0 duplicates.
+
+✅ SourceLineID is unique
+
+26 unique line IDs.
+
+✅ Order-level duplicates are legitimate
+
+Repeated SourceOrderID values represent multiple items belonging to the same order.
+
+✅ Numeric values are valid
+
+No negative quantities, prices, discounts, or line amounts.
+
+✅ Line calculations are valid
+
+All 26 records satisfy:
+
+Qty × UnitPrice − DiscountAmount = LineAmount
+
+✅ Dates are valid
+
+No missing dates and no invalid ModifiedOn < CreatedOn relationships.
+
+⚠️ Datatype transformations are required
+
+The date fields are strings in the raw files and will need datetime conversion.
+
+⚠️ Monetary datatype requires target confirmation
+
+The three monetary fields are currently int64; target database datatype must be confirmed before transformation.
+
+Important Findings That Are NOT Issues
+Repeated SourceOrderID values
+Repeated SourceOrderIDInternal values
+Products appearing in multiple orders
+Shopify quantity of 2
+Shopify's AED 99 discount
+Different record counts across the three channels
+
+These are legitimate characteristics of an order-line dataset.
+
+Required Cleaning
+
+None.
+
+Required Transformation
+Convert CreatedOn → datetime.
+Convert ModifiedOn → datetime.
+Confirm and convert monetary fields to the approved working/target datatype.
+Decisions Required
+
+None identified at the business-data level.
+
+Only the monetary datatype needs to be confirmed against the database reference.
+
+Items That Must Remain Unchanged
+
+All valid source values and legitimate repeated order IDs must be preserved.
+
+Final Conclusion
+
+This is actually a very clean dataset.
+
+There is no major data cleaning problem here. Most of our work should therefore be datatype preparation, relationship validation, controlled consolidation, and database loading, not hours of cleaning.
+
+Status:
+
+🟢 READY FOR TRANSFORMATION DECISIONS
+
+The inspection follows your supplied pre-ETL requirement: inspect → identify → analyze → classify → propose → stop before transformation. We have not modified the raw datasets.

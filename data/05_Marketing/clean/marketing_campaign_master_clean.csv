@@ -1,0 +1,5 @@
+CampaignCode,CampaignName,CampaignType,StartDate,EndDate,DiscountPct,Description,ActiveFlag,CreatedOn,CreatedByUser,ModifiedOn,ModifiedByUser
+CAM001,Summer Tech Sale,Seasonal,2026-07-01,2026-07-31,10,Summer electronics promotion,True,2026-06-20,marketing_admin,2026-07-15,marketing_admin
+CAM002,Back to School,Seasonal,2026-07-15,2026-08-31,15,Student device promotion,True,2026-07-01,marketing_admin,2026-07-15,marketing_admin
+CAM003,Weekend Flash Sale,Flash Sale,2026-07-10,2026-07-12,20,Limited weekend discount,False,2026-07-05,marketing_admin,2026-07-13,marketing_admin
+CAM004,New Customer Offer,Acquisition,2026-07-01,2026-09-30,5,New customer discount,True,2026-06-25,marketing_admin,2026-07-15,marketing_admin

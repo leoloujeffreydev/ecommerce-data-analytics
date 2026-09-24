@@ -1,0 +1,16 @@
+ProductCode,SKU,ProductName,Description,CategoryCode,SupplierCode,UnitCost,ListPrice,WeightKg,WarrantyMonths,ActiveFlag,CreatedOn,CreatedByUser,ModifiedOn,ModifiedByUser
+P0001,LAP-001,Dell Inspiron 15,15-inch business laptop,CAT001,SUP001,2100,2499,1.75,24,True,2026-07-01,admin,2026-07-15,admin
+P0002,LAP-002, Lenovo IdeaPad 5 ,Everyday productivity laptop,CAT001,SUP002,1800,2199,1.65,24,True,2026-07-01,admin,2026-07-15,admin
+P0003,LAP-003,ASUS TUF Gaming,Gaming laptop,CAT001,SUP003,3200,3899,2.2,24,True,2026-07-01,admin,2026-07-15,admin
+P0004,PHN-001,Samsung Galaxy A55,Mid-range smartphone,CAT002,SUP004,1050,1399,0.21,12,True,2026-07-01,admin,2026-07-15,admin
+P0005,PHN-002,iPhone 15,Apple smartphone,CAT002,SUP005,2600,2999,0.17,12,True,2026-07-01,admin,2026-07-15,admin
+P0006,PHN-003,Google Pixel 9,Android smartphone,CAT002,SUP003,2500,2899,0.2,12,True,2026-07-01,admin,2026-07-15,admin
+P0007,TAB-001,iPad Air,Apple tablet,CAT003,SUP005,2200,2599,0.46,12,True,2026-07-01,admin,2026-07-15,admin
+P0008,TAB-002,Samsung Galaxy Tab S9,Android tablet,CAT003,SUP004,2400,2899,0.5,12,True,2026-07-01,admin,2026-07-15,admin
+P0009, MON-001 ,Dell 24 Monitor,24-inch business monitor,CAT004,SUP001,500,699,3.1,12,True,2026-07-01,admin,2026-07-15,admin
+P0010,MON-002,LG UltraWide 34,34-inch ultrawide monitor,CAT004,SUP006,1250,1599,6.2,24,True,2026-07-01,admin,2026-07-15,admin
+P0011,ACC-001,Logitech MX Master 3S,Wireless mouse,CAT005,SUP007,280,399,0.14,12,True,2026-07-01,admin,2026-07-15,admin
+P0012,ACC-002,Keychron K2,Mechanical keyboard,CAT005,SUP007,300,449,0.84,12,True,2026-07-01,admin,2026-07-15,admin
+P0013,ACC-003,Anker USB-C Hub,USB-C connectivity hub,CAT005,SUP004,120,179,0.15,12,True,2026-07-01,admin,2026-07-15,admin
+P0014,NET-001,TP-Link AX3000 Router,Wi-Fi 6 router,CAT006,SUP006,320,499,0.7,24,True,2026-07-01,admin,2026-07-15,admin
+P0015,NET-002,Ubiquiti Access Point,Enterprise wireless access point,CAT006,SUP003,520,699,0.41,24,True,2026-07-01,admin,2026-07-15,admin

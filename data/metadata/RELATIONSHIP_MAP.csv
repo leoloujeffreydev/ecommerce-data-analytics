@@ -1,0 +1,14 @@
+Parent Table,Parent Key,Child Table,Child Key
+Customer,customer_id,Sales Order,customer_id
+Supplier,supplier_id,Product,supplier_id
+Category,category_id,Product,category_id
+Product,product_id,Sales Order Item,product_id
+Product,product_id,Inventory,product_id
+Warehouse,warehouse_id,Inventory,warehouse_id
+Warehouse,warehouse_id,Shipment,warehouse_id
+Marketing Campaign,campaign_id,Sales Order,campaign_id
+Sales Order,sales_order_id,Sales Order Item,sales_order_id
+Sales Order,sales_order_id,Payment,sales_order_id
+Sales Order,sales_order_id,Shipment,sales_order_id
+Sales Order Item,sales_order_item_id,Return,sales_order_item_id
+Inventory,inventory_id,Inventory Movement,inventory_id

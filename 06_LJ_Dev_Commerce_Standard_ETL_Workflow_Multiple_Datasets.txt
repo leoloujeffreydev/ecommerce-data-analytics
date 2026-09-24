@@ -1,0 +1,987 @@
+LJ DEV COMMERCE — STANDARD ETL WORKFLOW
+RAW DATA → CLEAN CSV → DATABASE-READY → POSTGRESQL
+
+============================================================
+CORE RULE
+============================================================
+
+WORKFLOW STRUCTURE = STANDARDIZED
+
+DATA FINDINGS / TRANSFORMATIONS / VALIDATION RULES = DATASET-SPECIFIC
+
+
+============================================================
+MULTIPLE DATASET EXECUTION RULE
+============================================================
+
+When one target dataset is supplied by MULTIPLE SOURCE DATASETS,
+the same standardized ETL workflow must be applied independently
+to each source dataset before consolidation.
+
+The source datasets must remain separate during:
+
+- Raw loading
+- Initial inspection
+- Profiling
+- Profiler issue review
+- Independent analyst review
+- Transformation decisions
+- Cleaning / transformation
+- Transformation validation
+- Data preservation validation
+
+Do NOT consolidate the raw datasets before source-specific analysis
+and validation are complete.
+
+The purpose is to ensure that issues specific to one source system
+are not hidden by combining the datasets too early.
+
+MULTIPLE DATASET PIPELINE:
+
+SOURCE DATASET A
+    ↓
+EXTRACT & ANALYZE
+    ↓
+TRANSFORM
+    ↓
+VALIDATE
+    ↓
+VALIDATED CLEAN DATAFRAME A
+
+SOURCE DATASET B
+    ↓
+EXTRACT & ANALYZE
+    ↓
+TRANSFORM
+    ↓
+VALIDATE
+    ↓
+VALIDATED CLEAN DATAFRAME B
+
+SOURCE DATASET C
+    ↓
+EXTRACT & ANALYZE
+    ↓
+TRANSFORM
+    ↓
+VALIDATE
+    ↓
+VALIDATED CLEAN DATAFRAME C
+
+            ↓
+     CONTROLLED CONSOLIDATION
+            ↓
+CONSOLIDATED CLEAN DATAFRAME
+            ↓
+       CLEAN CSV EXPORT
+            ↓
+   EXPORTED CLEAN CSV VERIFICATION
+            ↓
+       DATABASE READY
+            ↓
+       POSTGRESQL
+
+Each source dataset is therefore treated as an independent ETL
+unit until its transformation and validation stages are complete.
+
+Only after all source datasets have passed their required validation
+checks may they be consolidated into one Clean DataFrame.
+
+The consolidation step is NOT a reconciliation step.
+
+CONSOLIDATION:
+- Combines validated source-specific Clean DataFrames.
+- Preserves approved source-system lineage.
+- Produces one consolidated Clean DataFrame for the target dataset.
+
+RECONCILIATION:
+- Occurs later during the PostgreSQL stage.
+- Compares the database-ready dataset with the PostgreSQL target.
+- Validates row counts, keys, values, and record-level consistency
+  where appropriate.
+
+Do not use consolidation to correct, standardize, or silently alter
+source values.
+
+Any source-specific business exception that was approved for retention
+must remain visible after consolidation.
+
+
+============================================================
+01. EXTRACT & ANALYZE
+============================================================
+
+1.1 Setup
+- Import required libraries
+- Configure display/options if needed
+- Define project paths
+- Load required reusable tools, such as the data profiler
+
+For multiple datasets:
+- Define paths independently for each source dataset.
+- Keep source-specific raw DataFrames separately named.
+- Do not overwrite one source dataset with another.
+
+Example:
+
+<source_a>_<dataset_name>_raw
+<source_b>_<dataset_name>_raw
+<source_c>_<dataset_name>_raw
+
+
+1.2 Load Raw Dataset
+- Define the raw dataset path
+- Load the source CSV/file
+- Create the standardized raw DataFrame:
+
+<dataset_name>_raw
+
+For multiple source datasets:
+
+- Load each source independently.
+- Create one raw DataFrame per source.
+- Preserve each source exactly as received.
+- Create a deep copy of each raw dataset when source preservation
+  is required.
+
+Example:
+
+<source_a>_<dataset_name>_raw
+<source_b>_<dataset_name>_raw
+<source_c>_<dataset_name>_raw
+
+Do NOT concatenate the raw datasets at this stage.
+
+RULE:
+
+RAW SOURCE DATASETS = NEVER MODIFIED
+
+
+1.3 Initial Inspection
+Review the untouched raw dataset:
+- Shape
+- Column names
+- Data types
+- Sample records
+- Basic null information
+
+No data modification.
+
+For multiple datasets:
+- Perform the inspection separately for every source dataset.
+- Record source-specific row counts, columns, datatypes, and nulls.
+- Do not assume that structurally similar datasets are identical
+  until they have been inspected.
+
+
+1.4 Run Profiler
+Run the reusable profiler against the untouched raw DataFrame.
+
+The profiler may identify:
+- Missing values
+- Duplicates
+- Whitespace
+- Potential datatype issues
+- Date issues
+- Numeric issues
+- Categorical patterns
+- Identifier patterns
+- Other detected data-quality issues
+
+Profiler results are findings, not automatic transformation instructions.
+
+For multiple datasets:
+- Run the profiler independently against each raw DataFrame.
+- Keep profiling results separately associated with their source.
+- Do not combine profiler results before source-specific review.
+
+
+1.5 Review Profiling Results
+Review the complete profiler output.
+
+This separates:
+- Automated profiling findings
+- Issues requiring analyst review
+- Potential business-rule decisions
+- Potential transformation candidates
+
+No data modification.
+
+For multiple datasets:
+- Review each source profiler result separately.
+- Identify source-specific issues.
+- Identify issues common across sources only after each source has
+  been independently reviewed.
+
+
+1.6 Review Profiler Issues
+Review the specific ISSUES output separately.
+
+For every detected issue, determine whether it is:
+- Real issue
+- False positive
+- Expected business value
+- Requires transformation
+- Requires further investigation
+
+For multiple datasets:
+- Review profiler issues independently for each source.
+- Do not assume the same issue has the same business meaning across
+  all source systems.
+- Source-specific conventions must be considered before approving
+  a transformation.
+
+
+1.7 Independent Analyst Review
+Perform dataset-specific checks beyond the automated profiler.
+
+Examples may include:
+- Primary/business key uniqueness
+- Duplicate investigation
+- Category/value consistency
+- Business-rule validation
+- Cross-column validation
+- Date logic
+- Referential relationships
+- Raw datatype suitability
+- Source-system conventions
+
+IMPORTANT:
+This section must include datatype preparation requirements even if
+the profiler successfully recognizes a semantic datatype.
+
+Example:
+
+Profiler detects CreatedOn as DATE
+
+But pandas raw dtype = object
+
+Therefore:
+Transformation required later:
+object → datetime
+
+For multiple datasets:
+- Perform the independent analyst review separately for every source.
+- Validate source-specific identifiers and business keys.
+- Check cross-source identifier collisions where relevant.
+- Check structural consistency across sources.
+- Check source-specific business rules.
+- Check relationships that will matter after consolidation.
+- Identify whether source columns can be mapped consistently to the
+  same target columns.
+- Do not resolve cross-source differences by silently changing raw
+  values.
+
+
+1.8 Transformation Decisions
+Document the final approved decisions.
+
+For every potential transformation:
+
+Column
+Current State
+Issue / Requirement
+Decision
+Transformation
+Reason
+
+Only transformations approved here proceed to Section 2.
+
+For multiple datasets:
+- Make decisions independently where source behavior differs.
+- If the same transformation is approved for all sources, document
+  that consistently.
+- If a transformation is source-specific, document the affected
+  source explicitly.
+- Business exceptions must be retained when there is insufficient
+  evidence to determine the correct replacement value.
+- Consolidation must not be used as a substitute for a missing
+  transformation decision.
+
+
+============================================================
+02. TRANSFORM
+============================================================
+
+2.1 Create Clean DataFrame
+Create a separate working copy:
+
+<dataset_name>_clean = <dataset_name>_raw.copy()
+
+RULE:
+
+RAW DATAFRAME = NEVER MODIFIED
+CLEAN DATAFRAME = TRANSFORMATION WORKING COPY
+
+For multiple datasets:
+- Create one independent Clean DataFrame for each source.
+- Never transform one source directly into another source's DataFrame.
+- Keep all source-specific Clean DataFrames separate until validation
+  is complete.
+
+Example:
+
+<source_a>_<dataset_name>_clean
+<source_b>_<dataset_name>_clean
+<source_c>_<dataset_name>_clean
+
+
+2.2 Apply Approved Transformations
+Apply only transformations approved in Section 1.8.
+
+Possible examples:
+- Trim whitespace
+- Convert datatype
+- Standardize values
+- Handle approved missing values
+- Remove approved duplicates
+- Correct documented formatting issues
+
+The transformations themselves are dataset-specific.
+
+For multiple datasets:
+- Apply approved transformations independently to each Clean DataFrame.
+- Do not perform cross-source consolidation during transformation.
+- Do not modify values simply to make sources look consistent unless
+  that transformation was explicitly approved.
+
+
+============================================================
+03. VALIDATE
+============================================================
+
+3.1 Transformation Validation
+Validate every transformation performed.
+
+Validation must correspond directly to the transformation.
+
+Examples:
+
+Whitespace removed:
+→ Confirm no unintended leading/trailing whitespace remains
+
+Date conversion:
+→ Confirm datetime datatype
+→ Confirm invalid dates were handled according to the approved decision
+
+Category standardization:
+→ Confirm expected final category values
+
+Duplicate removal:
+→ Confirm approved duplicate logic worked
+
+For multiple datasets:
+- Validate each source independently.
+- Every approved transformation in every source must have a
+  corresponding validation.
+- A failure in one source must not be hidden by successful results
+  from another source.
+
+
+3.2 Data Preservation Validation
+Confirm that transformations did not unintentionally damage unrelated data.
+
+Depending on the dataset:
+- Row count preservation, when expected
+- Column preservation
+- Unaffected column preservation
+- Key preservation
+- Expected records retained
+- No unexpected data loss
+
+For multiple datasets:
+- Perform preservation validation separately for each source.
+- Confirm unaffected columns remain unchanged within each source.
+- Confirm source identifiers and lineage fields are preserved.
+- Confirm approved business exceptions remain unchanged.
+- Confirm no unexpected records were lost before consolidation.
+
+IMPORTANT:
+
+All source datasets must pass their required validation checks
+before consolidation.
+
+The consolidated Clean DataFrame must NOT be created as a way to
+bypass source-level validation.
+
+
+============================================================
+04. CLEAN CSV
+============================================================
+
+4.1 Export Clean Dataset
+Export the validated Clean DataFrame to the standardized Clean folder.
+
+Example:
+
+data
+└── <dataset_folder>
+    └── clean
+        └── <dataset_name>_clean.csv
+
+For a single dataset:
+- Export the validated Clean DataFrame directly.
+
+For multiple source datasets:
+- The source-specific Clean DataFrames are validated first.
+- They are then consolidated into ONE Clean DataFrame when they
+  represent the same target dataset and have been approved for
+  controlled consolidation.
+
+Do not export a consolidated dataset before all source-specific
+validation is complete.
+
+
+4.1 MULTIPLE DATASET — Controlled Consolidation
+When multiple validated source datasets belong to the same target
+dataset, perform controlled consolidation only after each source
+has completed:
+
+- Profiling
+- Independent analyst review
+- Transformation decisions
+- Cleaning
+- Transformation validation
+- Data preservation validation
+
+Consolidate only the validated Clean DataFrames.
+
+Example:
+
+<source_a>_<dataset_name>_clean
+<source_b>_<dataset_name>_clean
+<source_c>_<dataset_name>_clean
+
+↓
+
+<dataset_name>_clean
+
+
+The consolidation operation should:
+
+- Combine rows from the validated source-specific Clean DataFrames.
+- Preserve the approved column structure.
+- Preserve source-system lineage fields.
+- Preserve source-specific identifiers required for reconciliation.
+- Preserve approved business values.
+- Preserve NULL values that were approved during source analysis.
+- Avoid generating new business identifiers unless explicitly required
+  by the approved database design.
+- Avoid silently correcting source-specific exceptions.
+
+Before finalizing consolidation, verify:
+- Column names are compatible.
+- Column order is controlled.
+- Datatypes are compatible.
+- Source-specific required mappings are complete.
+- No unexpected columns are introduced.
+- No approved source records are lost.
+- No unintended duplicate records are introduced by consolidation.
+- Source-system and source-record lineage remain identifiable.
+
+The result is ONE consolidated Clean DataFrame representing the
+validated source datasets for the target dataset.
+
+
+4.2 Verify Exported Clean CSV
+This is a required pipeline stage.
+
+Read the exported CSV back:
+
+<dataset_name>_clean_csv
+
+Verify:
+- File successfully loads
+- Row count matches
+- Column structure matches
+- Data values are preserved
+- Required datatypes are restored/parsed correctly when reading
+
+For multiple datasets, verification must be performed against the
+CONSOLIDATED Clean DataFrame and must also account for the expected
+combined row count from the validated source Clean DataFrames.
+
+Example:
+
+VALIDATED SOURCE A ROW COUNT
++
+VALIDATED SOURCE B ROW COUNT
++
+VALIDATED SOURCE C ROW COUNT
+=
+EXPECTED CONSOLIDATED ROW COUNT
+
+Then compare the expected consolidated result against the exported
+Clean CSV.
+
+
+PIPELINE HANDOFF:
+
+SINGLE DATASET:
+
+CLEAN DATAFRAME
+      ↓
+EXPORT
+      ↓
+CLEAN CSV FILE
+      ↓
+READ BACK
+      ↓
+VERIFIED CLEAN CSV DATAFRAME
+
+
+MULTIPLE DATASETS:
+
+SOURCE A CLEAN DATAFRAME ─────┐
+SOURCE B CLEAN DATAFRAME ─────┼→ CONTROLLED CONSOLIDATION
+SOURCE C CLEAN DATAFRAME ─────┘
+                              ↓
+                  CONSOLIDATED CLEAN DATAFRAME
+                              ↓
+                           EXPORT
+                              ↓
+                       CLEAN CSV FILE
+                              ↓
+                          READ BACK
+                              ↓
+                 VERIFIED CLEAN CSV DATAFRAME
+
+
+The Clean CSV is therefore not just a backup.
+
+It is the official handoff artifact between:
+
+DATA CLEANING
+        ↓
+DATABASE PREPARATION
+
+
+============================================================
+05. DATABASE READY
+============================================================
+
+5.1 Define Source → Target Mapping
+
+Before creating the database-ready DataFrame, explicitly define and review:
+
+VERIFIED CLEAN CSV COLUMN
+            ↓
+POSTGRESQL TARGET COLUMN
+            ↓
+TARGET DATATYPE
+            ↓
+DATABASE RULE / CONSTRAINT
+
+The mapping must be based on the project's actual database
+design/documentation.
+
+Review:
+- Source column name
+- Target SQL column name
+- Target datatype
+- Nullable / required status
+- Primary key role
+- Foreign key role
+- Default values, if applicable
+- Any required transformation specifically for database compatibility
+
+IMPORTANT:
+
+Do not guess SQL structure.
+
+Use the project's source of truth for:
+- Source-to-target mapping
+- Database schema/design
+- Relationship map
+- Load order
+- Existing table structure
+
+For multiple datasets:
+- Mapping is performed against the CONSOLIDATED verified Clean CSV.
+- Source lineage columns must be retained when required by the
+  approved design.
+- Do not map different source columns to the same target column
+  unless the mapping has been explicitly verified.
+- Any source-specific mapping differences must be documented.
+
+
+5.2 Create Database-Ready Dataset FROM EXPORTED CSV
+
+Create:
+
+<dataset_name>_db_ready
+
+Starting from:
+
+<dataset_name>_clean_csv
+
+—not directly from the in-memory Clean DataFrame.
+
+PIPELINE:
+
+VERIFIED CLEAN CSV
+        ↓
+SOURCE → TARGET MAPPING
+        ↓
+COLUMN RENAMING / REORDERING
+DATATYPE PREPARATION
+DATABASE-SPECIFIC REQUIREMENTS
+        ↓
+DATABASE-READY DATAFRAME
+
+For multiple datasets:
+- The starting point is the verified consolidated Clean CSV.
+- Do not bypass the exported Clean CSV by mapping directly from an
+  in-memory consolidated DataFrame.
+
+
+5.3 Database-Ready Validation
+
+Validate the database-ready DataFrame before PostgreSQL loading.
+
+Check as applicable:
+- Row count
+- Expected target columns
+- Column order
+- Target-compatible datatypes
+- Required fields
+- Nullability
+- Primary key uniqueness
+- Foreign key readiness
+- Mapping completeness
+- No undocumented source columns lost
+
+For multiple datasets:
+- Validate the consolidated total row count.
+- Validate uniqueness of the approved target key.
+- Validate source-system/source-record lineage where applicable.
+- Validate foreign-key readiness across the consolidated dataset.
+- Confirm no source-specific records disappeared during mapping.
+
+
+============================================================
+06. POSTGRESQL
+============================================================
+
+6.1 Connect
+Connect to PostgreSQL.
+
+Confirm:
+- Connection successful
+- Correct database
+- Correct schema
+
+
+6.2 Prepare / Create Target Table
+
+Before creating anything:
+- Check whether the table already exists
+- Review the approved target design
+- Confirm schema name
+- Confirm table name
+- Confirm PostgreSQL datatypes
+- Confirm constraints
+
+Then:
+
+CREATE TABLE
+
+only if required by the project workflow.
+
+We should not blindly recreate existing tables.
+
+
+6.3 Verify Table Structure
+
+Verify the actual PostgreSQL table:
+- Column names
+- Column order
+- Data types
+- NULL / NOT NULL rules
+- Defaults
+
+Compare it against the approved Source → Target Mapping.
+
+
+6.4 Verify Keys, Relationships & Load Dependencies
+
+Verify as applicable:
+- Primary key
+- Unique constraints
+- Foreign keys
+- Referenced parent tables
+
+Also confirm load dependency:
+
+Is the required parent/master data already loaded?
+
+This must follow the project's ETL load order.
+
+
+6.5 Insert Records
+
+Load:
+
+<dataset_name>_db_ready
+
+into the verified PostgreSQL target table.
+
+Use the approved loading method.
+
+Avoid accidental duplicate loads.
+
+
+6.6 Validate Row Count
+
+Compare:
+
+DB-READY SOURCE ROW COUNT
+            vs
+POSTGRESQL TABLE ROW COUNT
+
+Account for the intended load scope.
+
+
+6.7 Retrieve Records
+
+Retrieve records from PostgreSQL to confirm the data is actually
+stored correctly.
+
+Review:
+- Sample records
+- Column values
+- Dates
+- Boolean/numeric values
+- Expected formatting
+
+
+6.8 Source → Database Reconciliation
+
+Compare:
+
+DATABASE-READY DATASET
+            ↓
+POSTGRESQL TABLE
+
+Validate:
+- Row counts
+- Key values
+- Column values
+- Record-level consistency where appropriate
+
+This is different from merely checking that records exist.
+
+For multiple datasets:
+- Reconciliation is performed against the consolidated database-ready
+  dataset.
+- Source-system and source-record lineage may be used to trace any
+  discrepancy back to the originating source dataset.
+
+
+6.9 Database Integrity Validation
+
+Perform final dataset-specific database checks.
+
+Examples:
+- Primary key uniqueness
+- Foreign key integrity
+- Required fields
+- Duplicate records
+- Unexpected NULLs
+- Business-rule checks
+- Relationship integrity
+
+For multiple datasets:
+- Validate relationships across the consolidated target dataset.
+- Confirm no source-specific records violate target constraints.
+- Validate business exceptions that were intentionally retained.
+
+
+6.10 Close Connection
+
+Close PostgreSQL resources cleanly.
+
+Confirm the database connection is closed.
+
+
+============================================================
+FINAL LOCKED STANDARD — SINGLE DATASET
+============================================================
+
+01. EXTRACT & ANALYZE
+    1.1 Setup
+    1.2 Load Raw Dataset
+    1.3 Initial Inspection
+    1.4 Run Profiler
+    1.5 Review Profiling Results
+    1.6 Review Profiler Issues
+    1.7 Independent Analyst Review
+
+1.7 is the notebook-based version of our Pre-ETL Inspection.
+
+This means we don't just check a few conditions. We systematically
+inspect the dataset again using our own analyst checks.
+
+The difference is that the earlier Pre-ETL inspection was done before
+building the ETL notebook as our planning/reference check, while 1.7
+documents and reproduces that independent analyst investigation within
+the actual ETL workflow.
+
+That means the code for 1.7 should be designed to systematically check
+the important areas we checked during the Pre-ETL inspection—not the
+limited version I initially gave you.
+
+    1.8 Transformation Decisions
+
+1.8 Findings and Transformation Decisions
+→ Compare:
+
+Profiler findings
+Independent Analyst Review findings
+Data Dictionary/business requirements
+
+And formally decide:
+
+What needs cleaning
+What needs transformation
+What requires a business decision
+What is valid and should remain unchanged
+
+
+02. TRANSFORM
+    2.1 Create Clean DataFrame
+    2.2 Apply Approved Transformations
+
+03. VALIDATE
+    3.1 Transformation Validation
+    3.2 Data Preservation Validation
+
+04. CLEAN CSV
+    4.1 Export Clean Dataset
+    4.2 Verify Exported Clean CSV
+
+05. DATABASE READY
+    5.1 Define Source → Target Mapping
+    5.2 Create Database-Ready Dataset FROM EXPORTED CSV
+    5.3 Database-Ready Validation
+
+06. POSTGRESQL
+    6.1 Connect
+    6.2 Prepare / Create Target Table
+    6.3 Verify Table Structure
+    6.4 Verify Keys, Relationships & Load Dependencies
+    6.5 Insert Records
+    6.6 Validate Row Count
+    6.7 Retrieve Records
+    6.8 Source → Database Reconciliation
+    6.9 Database Integrity Validation
+    6.10 Close Connection
+
+
+============================================================
+FINAL LOCKED STANDARD — MULTIPLE DATASETS
+============================================================
+
+Every source dataset uses the same structure independently:
+
+01. EXTRACT & ANALYZE
+    1.1 Setup
+    1.2 Load Raw Dataset
+    1.3 Initial Inspection
+    1.4 Run Profiler
+    1.5 Review Profiling Results
+    1.6 Review Profiler Issues
+    1.7 Independent Analyst Review
+    1.8 Transformation Decisions
+
+02. TRANSFORM
+    2.1 Create Clean DataFrame
+    2.2 Apply Approved Transformations
+
+03. VALIDATE
+    3.1 Transformation Validation
+    3.2 Data Preservation Validation
+
+These stages are completed SOURCE-BY-SOURCE.
+
+Only after all source datasets have passed their required validation:
+
+VALIDATED CLEAN DATAFRAME A
+        +
+VALIDATED CLEAN DATAFRAME B
+        +
+VALIDATED CLEAN DATAFRAME C
+        ↓
+CONTROLLED CONSOLIDATION
+        ↓
+ONE CONSOLIDATED CLEAN DATAFRAME
+        ↓
+04. CLEAN CSV
+    Export consolidated Clean DataFrame
+    Verify exported consolidated Clean CSV
+
+        ↓
+05. DATABASE READY
+    5.1 Define Source → Target Mapping
+    5.2 Create Database-Ready Dataset FROM EXPORTED CSV
+    5.3 Database-Ready Validation
+
+        ↓
+06. POSTGRESQL
+    6.1 Connect
+    6.2 Prepare / Create Target Table
+    6.3 Verify Table Structure
+    6.4 Verify Keys, Relationships & Load Dependencies
+    6.5 Insert Records
+    6.6 Validate Row Count
+    6.7 Retrieve Records
+    6.8 Source → Database Reconciliation
+    6.9 Database Integrity Validation
+    6.10 Close Connection
+
+
+============================================================
+MULTIPLE DATASET LOCKED RULE
+============================================================
+
+For multiple source datasets representing one target dataset:
+
+1. Load separately.
+2. Inspect separately.
+3. Profile separately.
+4. Review profiler issues separately.
+5. Perform independent analyst review separately.
+6. Make transformation decisions separately where required.
+7. Create separate Clean DataFrames.
+8. Apply approved transformations separately.
+9. Validate transformations separately.
+10. Validate data preservation separately.
+11. Do NOT consolidate before validation is complete.
+12. Consolidate only the validated Clean DataFrames.
+13. Create ONE consolidated Clean DataFrame.
+14. Export the consolidated Clean DataFrame to the Clean CSV.
+15. Read back and verify the exported Clean CSV.
+16. Build the Database-Ready dataset FROM the verified exported CSV.
+17. Validate the Database-Ready dataset.
+18. Load into PostgreSQL.
+19. Perform PostgreSQL validation and source → database reconciliation.
+
+The consolidation step must never be used to hide source-specific
+data-quality issues.
+
+Source-specific findings, approved exceptions, and lineage must remain
+traceable after consolidation.
+
+The pipeline structure is standardized.
+
+What changes per dataset/source is only:
+- Profiling findings
+- Independent analysis
+- Transformation decisions
+- Actual transformations
+- Validation logic
+- Source → target mapping details
+- Database relationships and constraints
+- Source-specific business rules and exceptions
+
+The pipeline structure itself is fixed.

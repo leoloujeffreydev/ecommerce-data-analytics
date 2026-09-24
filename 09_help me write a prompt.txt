@@ -1,0 +1,14 @@
+help me write a prompt:
+
+1. this prompt will be used for ETL creation of the specific dataset
+2. this prompt will be after every final etl inspection and decision
+3. All files will be attached:
+	raw dataset, data dictionary, etl loader, relationship map, source to target mapping, previous completed notebook as reference, raw dataset folder path, 
+4. Create a list at the end of the file for all the file and file reference / templates needed to proceed, and also file needed to be uploaded to check dependency
+5. 04_LJ_Dev_Commerce_Standard_ETL_Workflow, 06_LJ_Dev_Commerce_Standard_ETL_Workflow_Multiple_Datasets (whichever is needed will be uploaded as well so you can follow it.
+6. 07_REFERENCE-TO-DATASET ETL ADAPTATION WORKFLOW this will be also uploaded so that it can serve as guide so that the new notebook will be correctly adapted from the previous and completed notebook, all markdowns, comments, code, output, correct numbering should be adapted
+7. from our workflow, it should be correctly creating the notebook and all i need to do is to download the notebook which should be correctly named for consistency, and I will run and check if all codes and output are inline with our expectation. double check all and do not create issues or mistakes.
+8. create this prompt so we can skip the: copy form previous, paste in chat gpt, adapt, then paste to new notebook, run, validate manually.
+9. I know you can create this notebook correctly following all the file references, prompts, guides, documents and standard workflows
+10. suggest what i need to add to this prompt so I can add it and I will be having a perfect prompt that will create the correct ETL notebook for the specific dataset we are in.
+11. create a concise, informative, perfect, usable, not wasting anytime, no issues prompt.

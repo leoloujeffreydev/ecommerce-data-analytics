@@ -1,0 +1,153 @@
+1. Updated Pre-ETL findings — Sales Order
+
+Here is the consolidated version I would use for 07_sales_order_etl.ipynb:
+
+Area	Finding	Evidence / Result	Decision
+Dataset structure	3 Sales Order sources	Shopify 7 rows, Amazon UAE 7 rows, Noon 6 rows	✅ Process separately, then consolidate
+SourceOrderID	20 unique, no nulls	No duplicates across sources	✅ Retain
+SourceOrderIDInternal	20 unique	SO001–SO020, no cross-source collision	✅ Retain as source identifier
+CustomerCode	Non-null and valid-looking	C001–C015	✅ Retain; validate against Customer master before DB load
+CampaignCode	Some orders have campaigns, some don't	CAM001, CAM002, CAM004 and NULL	✅ Retain; validate against Marketing Campaign
+OrderDate	All dates parseable and within expected historical range	2026-07-05 → 2026-07-24	✅ Convert datatype; retain values
+OrderStatus	One formatting anomaly	" shipped "	🔧 Trim/standardize to Shipped
+Addresses	No obvious structural problem	Ship/Bill values present	✅ Retain
+PaymentMethod	Consistent categorical values	Visa, Credit Card, Mastercard, Cash on Delivery	✅ Retain
+OrderGrossAmount	Positive and non-null	AED 179 → AED 4,298	✅ Retain; datatype conversion required for target
+OrderNotes	All NULL	No notes provided	✅ Retain NULL
+Audit fields	Valid-looking	Created/Modified timestamps and users present	✅ Retain; datatype conversion required
+Exact duplicates	None	0	✅ No duplicate removal
+SO005 payment	Payment matches order value	Paid AED 3,448	✅ No financial correction
+SO005 order items	Items total exactly AED 3,448	iPhone 15 AED 2,999 + Keychron K2 AED 449	✅ No amount correction
+SO005 discount	No evidence of discount	Payment equals full item total	✅ Do not invent/apply discount
+SO005 → CAM002	Order precedes campaign start	Order July 9; campaign starts July 15	⚠️ Business-rule exception
+CAM002 source	Original campaign confirms July 15 start	Original source + Marketing ETL agree	✅ Do not modify campaign
+CAM002 ModifiedOn	Modified on July 15	Same day as campaign start	⚠️ Interesting audit clue, but insufficient to conclude why
+SO005 OrderDate	Confirmed by order/payment data	Order and payment both July 9	✅ Do not change to July 15
+SO005 CampaignCode	CAM002 present	Source order contains CAM002	✅ Do not remove
+Cross-dataset conclusion	Temporal inconsistency but no financial inconsistency	No evidence identifying the incorrect value	⚠️ Retain and flag
+2. The important SO005 decision
+
+I would record this separately because it's the major analyst finding:
+
+Record	Finding	Decision
+SO005	Order date = 09-Jul-2026, Campaign = CAM002	Retain
+CAM002	Start date = 15-Jul-2026	Retain
+Payment	Paid AED 3,448 on July 9	Retain
+Order Items	Total AED 3,448	Retain
+Discount	No evidence of discount	Do not create one
+Campaign relationship	Order occurs 6 days before campaign start	Flag as business-rule exception
+Root cause	Cannot be established from current data	Do not assume
+The decision is therefore:
+
+RETAIN SOURCE VALUES + FLAG BUSINESS-RULE EXCEPTION
+
+This follows our project rule that suspicious records whose correct value cannot be established should be investigated/flagged rather than automatically changed.
+
+3. Transformation required
+
+This is separate from the business decisions.
+
+The fact that something is not a data-quality error does not mean no transformation is required. Our ETL rules specifically require datatype review independently.
+
+Column(s)	Current state	Transformation	Why
+OrderDate	CSV/text/object	Convert → datetime	Required working/database datatype
+CreatedOn	CSV/text/object	Convert → datetime	Required target datatype
+ModifiedOn	CSV/text/object	Convert → datetime	Required target datatype
+OrderGrossAmount	Numeric source	Convert/standardize → target decimal/numeric	Target database requires monetary decimal
+OrderStatus	" shipped " anomaly	Trim whitespace + standardize	Produces canonical Shipped
+Identifier columns	Text	Keep as text	IDs must preserve source format/leading zeros
+CampaignCode	Text/nullable	Keep as text/nullable	No evidence justifying removal or correction
+CustomerCode	Text	Keep as text	Identifier
+Addresses	Text	Keep as text	No confirmed cleaning issue
+PaymentMethod	Text	No value transformation	Values are currently usable
+OrderNotes	NULL	No transformation	NULL is valid/expected
+SO005 OrderDate	Valid July 9	NO value change	Source-supported value
+SO005 CampaignCode	CAM002	NO value change	Source-supported value
+CAM002 StartDate	July 15	NO value change	Confirmed by original Marketing source
+4. What we are NOT going to do
+
+This is equally important for the portfolio.
+
+We are not going to:
+
+❌ Change SO005.OrderDate from July 9 → July 15
+❌ Change CAM002.StartDate from July 15 → July 9
+❌ Remove CAM002 from SO005
+❌ Create a discount
+❌ Change SO005's order total
+❌ Change the payment amount
+❌ Delete SO005
+❌ Remove the record because it violates the date rule
+
+There is no evidence supporting any of those actions.
+
+The raw Sales Order data must remain untouched; transformations happen on a working copy only.
+
+5. Transformation Readiness
+
+So our status is:
+
+🟢 READY FOR TRANSFORMATION
+
+But with one important condition:
+
+The transformation section should only implement the approved deterministic transformations above.
+
+In particular:
+
+RAW
+ ↓
+copy
+ ↓
+SALES_ORDER_CLEAN
+ ↓
+trim OrderStatus
+ ↓
+convert dates
+ ↓
+convert monetary datatype
+ ↓
+validate
+
+The SO005/CAM002 exception remains unchanged throughout that process.
+
+6. What we do next
+
+I recommend we now follow the locked workflow exactly:
+
+Step 1 — Section 1.8
+
+Add the Findings and Transformation Decisions cell to 07_sales_order_etl.ipynb.
+
+Step 2 — Transformation Readiness Checklist
+
+Review every column:
+
+Source datatype
+Target datatype
+Value cleaning?
+Datatype conversion?
+Approved?
+Step 3 — Section 2
+
+Only after that do we create:
+
+shopify_orders_clean
+amazon_orders_clean
+noon_orders_clean
+
+and apply the approved transformations.
+
+Step 4 — Validate
+
+Especially verify:
+
+SO005 OrderDate remains 2026-07-09
+SO005 CampaignCode remains CAM002
+SO005 OrderGrossAmount remains 3448
+
+and:
+
+" shipped " → "Shipped"
+
+So I would stop here for now. We have enough evidence to close the investigation and make the formal decisions. The next actual coding step should be Section 1.8 in 07_sales_order_etl.ipynb, not Section 2 yet. This keeps the project aligned with the locked ETL workflow and avoids silently turning an unresolved business question into a data correction.

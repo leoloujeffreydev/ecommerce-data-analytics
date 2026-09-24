@@ -1,0 +1,65 @@
+✅ Step 1 — Sales Order Pre-ETL Findings & Transformation Decisions
+
+I checked the actual Phase 3 Data Dictionary again. It defines sales_order_id as Text, Required, Primary Key, with example SO001.
+
+It also confirms Sales Order has relationships to Customer, Marketing Campaign, Sales Order Item, Payment, and Shipment.
+
+Approved decisions
+Area	Finding	Approved Decision
+Sales Order ID	SourceOrderIDInternal contains SO001–SO020	Map to sales_order_id
+Source Order ID	SourceOrderID contains source-specific IDs	Retain for lineage during ETL; not target PK
+ID values	Existing identifiers are valid and used by related datasets	Do not regenerate or modify
+Order Status	One value is " shipped "	Trim → Shipped
+Order Date	Dates are valid/parseable	Datatype conversion only
+Order Amount	Positive numeric values	Convert to target Decimal
+Campaign	SO005 references CAM002 before campaign start	Retain source values + flag exception
+Customer Code	References existing Customer records	Validate FK readiness
+Campaign Code	References existing Campaign records where populated	Validate FK readiness
+Audit fields	Valid source values	Datatype conversion where required
+Raw files	Source-of-truth datasets	Never modify
+
+So the key mapping is now officially:
+
+SourceOrderIDInternal
+        ↓
+   sales_order_id
+
+This is consistent with the Data Dictionary's SO001 target example and the later Sales Order Item FK relationship. The Sales Order Item design specifically expects sales_order_id such as SO001.
+
+Step 2 — Transformation Readiness Checklist
+
+Before we create the notebook, we need to formally check:
+
+Data readiness
+ All three source datasets inspected
+ Source structures compared
+ Nulls reviewed
+ Duplicates reviewed
+ IDs reviewed
+ Dates reviewed
+ Statuses reviewed
+ Amounts reviewed
+ Audit fields reviewed
+Business readiness
+ Sales Order ID strategy decided
+ Source ID lineage understood
+ SO005/CAM002 exception investigated
+ No unsupported source correction identified
+ Existing IDs will remain unchanged
+Relationship readiness
+ Customer relationship identified
+ Campaign relationship identified
+ Sales Order → Sales Order Item dependency identified
+ Product relationship for the future child ETL identified
+ Existing key values preserved
+Transformation readiness
+ Required transformations identified
+ No undocumented business-value transformations
+ Raw data will remain untouched
+ Source-specific inspection completed
+ Consolidation can proceed after transformation logic is defined
+🟢 Status: READY FOR TRANSFORMATION
+
+The project instructions say that 1.8 Transformation Decisions is where we compare profiler findings, independent analyst findings, and Data Dictionary/business requirements before formally deciding what gets cleaned, transformed, retained, or requires a business decision.
+
+We have now completed that decision stage at the Pre-ETL planning level.

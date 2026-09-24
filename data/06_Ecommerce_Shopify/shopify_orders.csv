@@ -1,0 +1,8 @@
+SourceSystem,SourceOrderID,SourceOrderIDInternal,CustomerCode,CampaignCode,OrderDate,OrderStatus,ShipToAddress,BillToAddress,PaymentMethod,OrderGrossAmount,OrderNotes,CreatedOn,CreatedByUser,ModifiedOn,ModifiedByUser
+Shopify,SHOPIFY-SO001,SO001,C001,CAM001,2026-07-05,Completed,"Al Jafiliya, Dubai","Al Jafiliya, Dubai",Visa,3198,,2026-07-05,admin,2026-07-05,admin
+Shopify,SHOPIFY-SO002,SO002,C002,CAM004,2026-07-06,Completed,"Makati, Manila","Makati, Manila",Credit Card,2199,,2026-07-06,admin,2026-07-06,admin
+Shopify,SHOPIFY-SO003,SO003,C003,,2026-07-07,Completed,"Dubai Marina, Dubai","Dubai Marina, Dubai",Cash on Delivery,1399,,2026-07-07,admin,2026-07-07,admin
+Shopify,SHOPIFY-SO004,SO004,C004,CAM001,2026-07-08, shipped ,"Al Nahda, Dubai","Al Nahda, Dubai",Visa,4298,,2026-07-08,admin,2026-07-08,admin
+Shopify,SHOPIFY-SO005,SO005,C005,CAM002,2026-07-09,Completed,"Abu Dhabi City, Abu Dhabi","Abu Dhabi City, Abu Dhabi",Mastercard,3448,,2026-07-09,admin,2026-07-09,admin
+Shopify,SHOPIFY-SO006,SO006,C006,,2026-07-10,Pending,"Jumeirah, Dubai","Jumeirah, Dubai",Cash on Delivery,699,,2026-07-10,admin,2026-07-10,admin
+Shopify,SHOPIFY-SO007,SO007,C007,CAM002,2026-07-11,Completed,"Sharjah City, Sharjah","Sharjah City, Sharjah",Visa,3257,,2026-07-11,admin,2026-07-11,admin

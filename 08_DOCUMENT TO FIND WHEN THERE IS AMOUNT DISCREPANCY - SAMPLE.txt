@@ -1,0 +1,6 @@
+DOCUMENT TO FIND WHEN THERE IS AMOUNT DISCREPANCY - SAMPLE
+
+zoho_books_customer_payments original/raw source
+Zoho Books sales invoice / invoice payment allocation for SO007
+Zoho Books customer invoice / sales invoice corresponding to SO007
+Zoho Books payment allocation / payment receipt showing how AED 3,078 was allocated none

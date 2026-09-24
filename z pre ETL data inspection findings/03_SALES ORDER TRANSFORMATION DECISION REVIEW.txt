@@ -1,0 +1,327 @@
+02_SALES ORDER TRANSFORMATION DECISION REVIEW
+STEP 2 — SALES ORDER TRANSFORMATION DECISION REVIEW
+
+We have 10 decisions/items to review.
+
+Decision 1 — SourceOrderIDInternal → sales_order_id
+
+Finding: Both order identifiers are unique, but SourceOrderIDInternal follows the target ID pattern:
+
+SHOPIFY-SO001 → SO001
+AMAZON-SO008 → SO008
+NOON-SO015   → SO015
+
+The Data Dictionary example is SO001.
+
+Recommendation
+
+APPROVE
+
+SourceOrderIDInternal
+        ↓
+sales_order_id
+
+SourceOrderID remains source-level traceability information but will not be added as an undocumented target column.
+
+Decision status: 🟢 APPROVE
+
+Decision 2 — CustomerCode → customer_id
+
+The target requires customer_id as a required FK to Customer.
+
+All 20 orders have a CustomerCode.
+
+Recommendation
+
+APPROVE
+
+CustomerCode
+      ↓
+customer_id
+      ↓
+commerce.customer.customer_id
+
+Actual FK existence will be validated later against the completed Customer table.
+
+Decision status: 🟢 APPROVE
+
+Decision 3 — CampaignCode → campaign_id
+
+Campaign is explicitly optional in the approved Data Dictionary.
+
+9/20 orders have NULL CampaignCode.
+
+Recommendation
+
+APPROVE
+
+CampaignCode
+      ↓
+campaign_id
+
+And:
+
+NULL CampaignCode
+      ↓
+NULL campaign_id
+
+Do not replace NULL with "N/A", "None", 0, etc.
+
+Decision status: 🟢 APPROVE
+
+Decision 4 — Trim OrderStatus
+
+One source contains:
+
+" shipped "
+
+This is a clear formatting problem.
+
+Recommendation
+
+APPROVE
+
+" shipped "
+     ↓
+"shipped"
+
+No other status meaning is changed by this operation.
+
+Decision status: 🟢 APPROVE
+
+Decision 5 — Canonical status capitalization
+
+After trimming:
+
+"shipped"
+
+should potentially become:
+
+"Shipped"
+
+The project distinguishes simple whitespace cleaning from actual value standardization.
+
+Recommendation
+
+APPROVE
+
+Use the existing source representation Shipped as the canonical representation.
+
+Therefore:
+
+" shipped "
+      ↓ trim
+"shipped"
+      ↓ canonicalize
+"Shipped"
+
+Other existing values remain:
+
+Completed
+Pending
+Cancelled
+Shipped
+
+Decision status: 🟢 APPROVE
+
+Decision 6 — Date conversion
+
+Source fields:
+
+OrderDate
+CreatedOn
+ModifiedOn
+
+contain valid date values but require proper datetime datatype preparation.
+
+Recommendation
+
+APPROVE
+
+object/string
+      ↓
+datetime
+
+This applies to all three date fields.
+
+No date values themselves should be altered.
+
+Decision status: 🟢 APPROVE
+
+Decision 7 — OrderGrossAmount → order_total
+
+The source amount is numeric and positive.
+
+The target Data Dictionary defines:
+
+order_total
+Decimal
+Required
+
+Recommendation
+
+APPROVE
+
+OrderGrossAmount
+       ↓
+order_total
+
+with Decimal-compatible preparation.
+
+Important: No currency conversion or mathematical adjustment.
+
+Decision status: 🟢 APPROVE
+
+Decision 8 — Preserve NULL OrderNotes
+
+All 20 records currently have NULL OrderNotes.
+
+The target notes field is optional.
+
+Recommendation
+
+APPROVE
+
+NULL
+ ↓
+NULL
+
+Do not manufacture values.
+
+Decision status: 🟢 APPROVE
+
+Decision 9 — CAM002 / SO005 anomaly
+
+This is the only major business-rule exception.
+
+We have:
+
+SO005
+OrderDate = 2026-07-09
+CampaignCode = CAM002
+
+while CAM002 begins:
+
+2026-07-15
+
+Therefore:
+
+Order:    July 9
+Campaign: July 15 → August 31
+
+        ⚠️ BEFORE CAMPAIGN START
+
+The project documentation explicitly says this should not be automatically corrected.
+
+Recommendation
+
+APPROVE RETENTION
+
+Keep:
+
+campaign_id = CAM002
+
+Do not:
+
+remove CAM002
+change the order date
+change the campaign dates
+delete SO005
+assign another campaign
+
+Instead, document it as a business-rule exception.
+
+Decision status: 🟢 APPROVE — RETAIN & FLAG
+
+Decision 10 — Shipping/Billing addresses
+
+All 20 records currently have:
+
+ShipToAddress = BillToAddress
+
+This is unusual but not proven incorrect.
+
+The target explicitly has separate:
+
+shipping_address
+billing_address
+
+fields.
+
+Recommendation
+
+APPROVE — NO CORRECTION
+
+Map independently:
+
+ShipToAddress → shipping_address
+BillToAddress → billing_address
+
+Even when the values happen to be identical.
+
+Decision status: 🟢 APPROVE
+
+Final Decision Register
+
+Here is the proposed approved Sales Order transformation register:
+
+#	Decision	Action	Status
+1	Primary ID	SourceOrderIDInternal → sales_order_id	🟢 Approve
+2	Customer FK	CustomerCode → customer_id	🟢 Approve
+3	Campaign FK	CampaignCode → campaign_id	🟢 Approve
+4	Status whitespace	Trim leading/trailing whitespace	🟢 Approve
+5	Status standardization	shipped → Shipped	🟢 Approve
+6	Dates	Convert 3 date fields to datetime	🟢 Approve
+7	Amount	OrderGrossAmount → order_total, Decimal-compatible	🟢 Approve
+8	Notes	Preserve NULL	🟢 Approve
+9	CAM002 anomaly	Retain CAM002; flag exception	🟢 Approve
+10	Addresses	Preserve separate shipping/billing fields	🟢 Approve
+What We Are NOT Approving
+
+Equally important:
+
+❌ No row deletion
+❌ No duplicate removal — none exists
+❌ No Customer modification
+❌ No Campaign modification
+❌ No invented currency conversion
+❌ No invented source_order_id target column
+❌ No replacing NULLs with "N/A"
+❌ No changing SO005's date
+❌ No changing CAM002's dates
+❌ No collapsing shipping/billing into one field
+❌ No processing Sales Order Items yet
+
+The Sales Order Item relationship will be validated later when 08_sales_order_item_etl.ipynb is processed.
+
+🟢 Proposed Step 2 Outcome
+
+If we approve this register, then Step 2 is officially complete.
+
+The next step will be:
+
+STEP 3 — Sales Order Source → Target Mapping & ETL Architecture
+
+There we will establish the exact mapping:
+
+SHOPIFY
+   ↓
+source-specific mapping
+   ↓
+AMAZON UAE
+   ↓
+source-specific mapping
+   ↓
+NOON
+   ↓
+canonical Sales Order
+   ↓
+Clean CSV
+   ↓
+Database-Ready
+   ↓
+commerce.sales_order
+
+This follows the project's required multi-source consolidation approach rather than blindly concatenating the three raw datasets.
+
+I recommend approving all 10 decisions above.

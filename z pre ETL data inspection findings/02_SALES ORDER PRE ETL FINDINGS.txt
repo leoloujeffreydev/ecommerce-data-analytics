@@ -1,0 +1,734 @@
+LJ Dev Commerce — Sales Order Pre-ETL Dataset Inspection
+
+Step 1 is now complete. I inspected the three actual raw Sales Order header files independently, then compared them across sources. I did not modify, clean, transform, rename, or delete any raw values.
+
+The inspection follows the required principle of inspecting first and deciding transformations afterward.
+
+1. Dataset Overview
+Source	Rows	Columns	Confirmed Grain
+Shopify	7	16	One Sales Order header per row
+Amazon UAE	7	16	One Sales Order header per row
+Noon	6	16	One Sales Order header per row
+Combined	20	16	One Sales Order header per row
+
+The actual raw files confirm the three source structures are identical: the same 16 columns appear in each source.
+
+The approved database design defines Sales Order as the header information for every customer order, with sales_order_id as the PK, customer_id as a required FK, and campaign_id as an optional FK.
+
+2. Source-by-Source Inspection
+A. Shopify
+
+7 rows × 16 columns
+
+Columns:
+
+SourceSystem
+SourceOrderID
+SourceOrderIDInternal
+CustomerCode
+CampaignCode
+OrderDate
+OrderStatus
+ShipToAddress
+BillToAddress
+PaymentMethod
+OrderGrossAmount
+OrderNotes
+CreatedOn
+CreatedByUser
+ModifiedOn
+ModifiedByUser
+
+All seven records have:
+
+SourceSystem = Shopify
+populated SourceOrderID
+populated SourceOrderIDInternal
+populated CustomerCode
+optional CampaignCode
+populated dates
+populated status
+populated addresses
+populated payment method
+positive order amount
+NULL OrderNotes
+populated audit fields
+
+The actual raw data shows one obvious formatting anomaly:
+
+OrderStatus = " shipped "
+
+on SHOPIFY-SO004.
+
+Finding: confirmed whitespace issue.
+
+B. Amazon UAE
+
+7 rows × 16 columns
+
+The same 16-column structure is present.
+
+Statuses include:
+
+Completed
+Cancelled
+
+The Cancelled record is:
+
+AMAZON-SO010
+SO010
+C010
+2026-07-14
+Cancelled
+449
+
+This is a valid source transaction state and must not be treated as a bad record merely because it is cancelled.
+
+There are no obvious formatting anomalies in the raw Amazon records.
+
+C. Noon
+
+6 rows × 16 columns
+
+The same 16-column structure is present.
+
+Noon contains:
+
+OrderStatus = Shipped
+
+without the whitespace problem found in Shopify.
+
+Again, no records should be removed simply because they have Pending or Shipped status.
+
+3. Column-by-Column Findings
+Identifiers
+SourceOrderID
+
+Combined:
+
+20 unique / 20 non-null / 0 duplicates
+
+Examples:
+
+SHOPIFY-SO001
+AMAZON-SO008
+NOON-SO015
+
+This is a strong source-system order identifier.
+
+However, we should not automatically make it the database PK because the approved target dictionary calls for:
+
+sales_order_id
+
+and the source has another identifier candidate.
+
+SourceOrderIDInternal
+
+Combined:
+
+20 unique / 20 non-null / 0 duplicates
+
+Pattern:
+
+SO001 – SO007
+SO008 – SO014
+SO015 – SO020
+
+There are no collisions across sources.
+
+This makes SourceOrderIDInternal the strongest candidate for the eventual target sales_order_id.
+
+However, per project rules, this remains a mapping decision to formally approve, not an automatic assumption.
+
+The Data Dictionary example for sales_order_id is SO001, which supports this candidate.
+
+4. Customer Relationship
+
+All 20 records contain a CustomerCode.
+
+Observed customer IDs:
+
+C001 – C015
+
+There are no missing CustomerCodes.
+
+The approved design requires:
+
+Sales Order.customer_id
+        ↓
+Customer
+
+as a required relationship.
+
+The project reference confirms that the Sales Orders reference C001–C015 and that the eventual check must be against the completed Customer table.
+
+Classification
+
+Automated finding:
+✅ No missing CustomerCode.
+
+Analyst finding:
+⚠️ All source customer identifiers appear structurally suitable for FK mapping.
+
+Important:
+Actual PostgreSQL FK validation must still be performed against the completed commerce.customer table during the database-ready/loading stage.
+
+We do not modify Customer data from Sales Order ETL.
+
+5. Marketing Campaign Relationship
+
+Observed:
+
+CAM001
+CAM002
+CAM004
+NULL
+
+There are 9 NULL CampaignCodes out of 20.
+
+This is not a data-quality error because the approved Data Dictionary explicitly defines Campaign as optional.
+
+Therefore:
+
+NULL CampaignCode should remain NULL.
+
+Important business-rule anomaly
+
+CAM002 requires special attention.
+
+The campaign reference indicates:
+
+CAM002
+Start: 2026-07-15
+End:   2026-08-31
+
+while:
+
+SHOPIFY-SO005
+OrderDate: 2026-07-09
+CampaignCode: CAM002
+
+Therefore the order occurs before the campaign start date. This is documented as a business-rule inconsistency in the project references.
+
+Classification
+
+C. Requires Analyst / Business Decision
+
+We should not change CAM002 automatically.
+
+Possible explanations include:
+
+campaign actually began earlier;
+campaign dates are incorrect;
+order date is incorrect;
+source system allowed pre-launch campaign assignment;
+simulation intentionally contains the anomaly.
+
+The project reference recommends retaining the value and flagging the exception unless a correction rule is provided.
+
+6. Order Status
+
+Raw values:
+
+Status	Count
+Completed	15
+Pending	2
+Shipped	1
+shipped	1
+Cancelled	1
+
+The important source difference is:
+
+Shopify: " shipped "
+Noon:    "Shipped"
+
+The whitespace is unquestionably a formatting issue.
+
+Classification
+
+A. Definitely requires cleaning
+
+Safe:
+
+" shipped "
+      ↓
+"shipped"
+
+But capitalization is a separate question:
+
+"shipped"
+      ↓
+"Shipped"
+
+That is value standardization, not just whitespace trimming.
+
+The project rules say status values should not be standardized automatically unless the correct business meaning/canonical representation is established.
+
+Therefore:
+
+Trim whitespace → safe
+Canonical capitalization → requires documented decision
+7. Dates
+
+Affected columns:
+
+OrderDate
+CreatedOn
+ModifiedOn
+
+Current pandas/source representation is effectively text/object.
+
+The actual values are consistently ISO-style:
+
+2026-07-05
+2026-07-06
+...
+2026-07-24
+
+No invalid dates were detected.
+
+Also:
+
+OrderDate = CreatedOn
+CreatedOn = ModifiedOn
+
+for all 20 records.
+
+No ModifiedOn < CreatedOn problems were found.
+
+No future dates exist relative to the current project date.
+
+Important datatype finding
+
+Even though the values are valid dates, the working datatype is still textual/object.
+
+The project specifically requires datatype readiness to be reviewed independently from data-quality issues. A valid date string can still require:
+
+object/string → datetime
+
+before the dataset is transformation-ready.
+
+Classification
+
+B. Datatype transformation required
+
+No value correction currently required.
+
+8. Order Amount
+
+OrderGrossAmount is:
+
+non-null
+numeric
+positive
+no mixed text values detected
+
+Range:
+
+Minimum: 179
+Maximum: 4,298
+
+Combined total:
+
+38,113
+
+No negative or obviously impossible amount was found.
+
+Important observation
+
+There is no explicit currency column in these raw sources.
+
+Therefore, we should not invent a currency transformation or currency conversion during this inspection.
+
+The target Data Dictionary specifies order_total as Decimal.
+
+Classification
+
+Datatype preparation required later:
+
+integer/numeric source
+        ↓
+Decimal-compatible target
+
+The numeric business values themselves should not be altered merely to display .00.
+
+9. Shipping vs Billing Address
+
+All 20 records have both:
+
+ShipToAddress
+BillToAddress
+
+And:
+
+ShipToAddress == BillToAddress
+
+for 20/20 records.
+
+This is unusual, but it is not automatically an error.
+
+The target model intentionally has separate:
+
+shipping_address
+billing_address
+
+fields.
+
+Classification
+
+D. Should remain unchanged
+
+Unless a business rule says the two addresses must be independently sourced or different, we should preserve them exactly.
+
+This is a good example of why we should not "clean" data simply because something looks repetitive.
+
+10. Order Notes
+
+OrderNotes is NULL in:
+
+20/20 records
+
+This is acceptable because notes is optional in the Data Dictionary.
+
+Classification
+
+Should remain unchanged.
+
+We should not manufacture notes such as "N/A".
+
+11. Audit Fields
+
+The audit fields are complete:
+
+CreatedOn
+CreatedByUser
+ModifiedOn
+ModifiedByUser
+
+All records have:
+
+CreatedByUser = admin
+ModifiedByUser = admin
+
+And:
+
+CreatedOn = ModifiedOn
+
+for all 20 records.
+
+No obvious audit chronology violation was found.
+
+Classification
+
+✅ No confirmed data-quality issue.
+
+Retain as supplied.
+
+12. Cross-Source Comparison
+Structure
+Check	Result
+Same number of columns	✅ Yes
+Same column names	✅ Yes
+Same column order	✅ Yes
+Source identifier present	✅ Yes
+Internal identifier present	✅ Yes
+Customer identifier present	✅ Yes
+Campaign identifier present/optional	✅ Yes
+Same date structure	✅ Yes
+Same amount field	✅ Yes
+Same audit structure	✅ Yes
+
+The project architecture intentionally uses these three sources as inputs to one canonical Sales Order entity.
+
+Source-specific difference
+
+The primary confirmed source-specific data-quality difference is the Shopify status:
+
+" shipped "
+
+versus Noon:
+
+"Shipped"
+
+Amazon also contains the valid business state:
+
+Cancelled
+
+which should be retained.
+
+13. Identifier Collision Investigation
+
+Across all 20 records:
+
+SourceOrderID
+20 unique
+0 duplicates
+0 null
+SourceOrderIDInternal
+20 unique
+0 duplicates
+0 null
+Cross-source collision
+
+No SourceOrderIDInternal is shared by different source systems.
+
+No SourceOrderID is shared by different source systems.
+
+Therefore, there is currently no identifier collision problem preventing consolidation.
+
+This strongly supports the eventual one-entity Sales Order design. The project references also document the SO001–SO020 sequence across the three sources.
+
+14. Findings Classification
+A. Automated Findings
+✅ No duplicate complete rows
+
+20 records; no exact duplicate rows.
+
+✅ No missing order identifiers
+
+SourceOrderID: 0 missing
+SourceOrderIDInternal: 0 missing
+
+✅ No duplicate order identifiers
+⚠️ CampaignCode NULL
+
+9/20 records.
+
+Not an issue because Campaign is optional.
+
+⚠️ OrderNotes NULL
+
+20/20 records.
+
+Not an issue because Notes is optional.
+
+⚠️ OrderStatus whitespace
+
+1 record:
+
+" shipped "
+✅ Order amounts
+
+All positive and numeric.
+
+✅ Dates
+
+All parseable and internally consistent.
+
+15. Independent Analyst Findings
+⚠️ SourceOrderIDInternal is the strongest candidate for sales_order_id
+
+Evidence:
+
+SHOPIFY-SO001 → SO001
+AMAZON-SO008 → SO008
+NOON-SO015 → SO015
+
+and the Data Dictionary example is:
+
+sales_order_id = SO001
+
+But final approval belongs in the transformation-decision stage.
+
+⚠️ CAM002 / SO005 date inconsistency
+
+Order date precedes campaign start date.
+
+Do not correct automatically.
+
+⚠️ Shipping and billing addresses are identical
+
+Unusual but not proven incorrect.
+
+⚠️ Status representation differs
+
+Whitespace issue is confirmed.
+
+Canonical capitalization still needs formal approval.
+
+⚠️ Customer FK readiness
+
+Identifiers are present and structurally valid, but actual FK validation belongs against the completed Customer master.
+
+⚠️ Campaign FK readiness
+
+Campaign IDs are structurally valid, but actual FK validation belongs against the Marketing Campaign master.
+
+16. Business Decisions Required
+Decision 1 — Sales Order Primary Key
+
+Question:
+
+Should:
+
+SourceOrderIDInternal
+
+map to:
+
+sales_order_id
+Recommendation
+
+Yes.
+
+It is unique across all three sources and matches the target Data Dictionary's identifier pattern.
+
+Decision 2 — Status Canonicalization
+
+Should:
+
+"shipped"
+
+be standardized to:
+
+"Shipped"
+Recommendation
+
+Yes, provided we formally document Shipped as the canonical representation.
+
+Whitespace trimming itself is not controversial.
+
+Decision 3 — CAM002 / SO005
+
+Should:
+
+SO005
+CampaignCode = CAM002
+
+remain unchanged even though the order predates the campaign start?
+
+Recommendation
+
+Yes. Retain the value and flag the exception.
+
+Do not rewrite the source transaction without an approved correction rule.
+
+17. Safe Deterministic Transformations
+
+These are the transformations currently supported by the inspection.
+
+Column	Current	Later Action	Classification
+OrderStatus	" shipped "	Trim whitespace	✅ Safe
+OrderDate	Text/object	Convert to datetime	✅ Required datatype conversion
+CreatedOn	Text/object	Convert to datetime	✅ Required datatype conversion
+ModifiedOn	Text/object	Convert to datetime	✅ Required datatype conversion
+OrderGrossAmount	Numeric	Prepare for Decimal target	✅ Required datatype preparation
+CampaignCode	NULL where absent	Preserve NULL	✅ Safe
+OrderNotes	NULL	Preserve NULL	✅ Safe
+IDs	Text	Preserve as text	✅ Safe
+
+No record deletion is currently justified.
+
+18. Items That Must Remain Unchanged
+Cancelled status
+
+Keep it.
+
+Pending orders
+
+Keep them.
+
+Shipped orders
+
+Keep them.
+
+NULL CampaignCode
+
+Keep NULL.
+
+NULL OrderNotes
+
+Keep NULL.
+
+Identical shipping/billing addresses
+
+Keep both fields.
+
+CAM002 on SO005
+
+Keep it until a business rule says otherwise.
+
+Source identifiers
+
+Do not rewrite or discard source identifiers during raw-data inspection.
+
+The project explicitly requires preservation of raw business meaning and prohibits silent modification.
+
+19. Data Dictionary Alignment
+
+The source contains 16 fields, while the approved Sales Order target contains 13 fields.
+
+The source clearly contains fields corresponding to the target:
+
+Source	Target candidate	Status
+SourceOrderIDInternal	sales_order_id	Strong candidate; decision required
+CustomerCode	customer_id	Strong candidate
+CampaignCode	campaign_id	Strong candidate
+OrderDate	order_date	Clear
+OrderStatus	order_status	Clear
+ShipToAddress	shipping_address	Clear
+BillToAddress	billing_address	Clear
+PaymentMethod	payment_method	Clear
+OrderGrossAmount	order_total	Clear
+OrderNotes	notes	Clear
+CreatedOn	created_date	Clear
+CreatedByUser	created_by	Clear
+ModifiedOn	updated_date	Clear
+ModifiedByUser	updated_by	Clear
+
+The three source-specific fields that do not have an obvious direct target field are:
+
+SourceSystem
+SourceOrderID
+
+We should not invent additional target columns merely to force them into the Data Dictionary.
+
+SourceOrderID remains valuable source-level traceability information, but the approved target structure must govern what ultimately enters commerce.sales_order.
+
+The project mapping rules explicitly require verified source columns to be mapped to approved target columns rather than creating mappings from assumptions.
+
+20. Overall Pre-ETL Assessment
+What we have
+
+20 Sales Orders
+
+Shopify       7
+Amazon UAE    7
+Noon          6
+----------------
+Total        20
+Data quality
+
+Overall, the raw data is relatively clean.
+
+There are only a few meaningful findings:
+
+One whitespace problem in OrderStatus
+Status capitalization requires canonicalization decision
+Optional CampaignCode NULLs
+Optional OrderNotes NULLs
+CAM002/SO005 campaign-date inconsistency
+Date fields require datatype conversion
+Amount requires Decimal-compatible preparation
+Customer/Campaign FK readiness requires later master-table validation
+
+The source architecture is highly suitable for consolidation because the three files have the same 16-column structure and unique order identifiers.
+
+21. Final Pre-ETL Conclusion
+
+We have now completed:
+
+INSPECT → IDENTIFY ISSUES → ANALYZE → CLASSIFY → PROPOSE CLEANING → IDENTIFY REQUIRED DECISIONS → STOP
+
+No raw dataset was modified.
+
+The project instructions explicitly require this stop point before transformations begin.
+
+🟢 READY FOR TRANSFORMATION DECISIONS
+
+But we are NOT starting transformations yet.
+
+The next step is Step 2 — Review and approve these findings/decisions.
+
+Once you approve them, we will move to Step 3 — Finalize the Sales Order ETL architecture, including the canonical structure, primary-key strategy, source consolidation strategy, FK validation approach, and approved transformation rules.
+
+Only after that will we create 07_sales_order_etl.ipynb.

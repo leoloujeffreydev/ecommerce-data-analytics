@@ -1,0 +1,15 @@
+Source System,Raw Extract,Target Entity,PostgreSQL Target,Basis
+CRM,Existing CRM customer extract,Customer,commerce.customer,Existing completed ETL
+Procurement / ERP,procurement_supplier_master.csv,Supplier,commerce.supplier,Simulation decision; BRD does not name a specific supplier source
+Product Catalog,product_catalog_categories.csv,Category,commerce.category,Simulation decision
+Product Catalog,product_catalog_products.csv,Product,commerce.product,Simulation decision
+Zoho Inventory,zoho_inventory_warehouses.csv,Warehouse,commerce.warehouse,BRD names Zoho Inventory
+Marketing system,marketing_campaign_master.csv,Marketing Campaign,commerce.marketing_campaign,Simulation decision
+Shopify,shopify_orders.csv + shopify_order_items.csv,Sales Order / Item,commerce.sales_order / sales_order_item,Simulation decision using BRD source
+Amazon UAE,amazon_orders.csv + amazon_order_items.csv,Sales Order / Item,commerce.sales_order / sales_order_item,Simulation decision using BRD source
+Noon,noon_orders.csv + noon_order_items.csv,Sales Order / Item,commerce.sales_order / sales_order_item,Simulation decision using BRD source
+Zoho Books,zoho_books_customer_payments.csv,Payment,commerce.payment,Simulation decision; BRD names Zoho Books
+Courier Systems,courier_shipments.csv,Shipment,commerce.shipment,BRD names courier systems
+Returns System,returns_transactions.csv,Return,commerce.return,Simulation decision
+Zoho Inventory,zoho_inventory_current_stock.csv,Inventory,commerce.inventory,BRD names Zoho Inventory
+Zoho Inventory,zoho_inventory_movements.csv,Inventory Movement,commerce.inventory_movement,BRD names Zoho Inventory

@@ -1,0 +1,1 @@
+Customer source: existing CRM customer extract used in completed Customer ETL. Do not recreate or reload Customer.

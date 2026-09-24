@@ -1,0 +1,7 @@
+CategoryCode,CategoryName,Description,ActiveFlag,CreatedOn,CreatedByUser,ModifiedOn,ModifiedByUser
+CAT001,Laptops,Portable computers,True,2026-07-01,admin,2026-07-15,admin
+CAT002,Smartphones,Mobile phones,True,2026-07-01,admin,2026-07-15,admin
+CAT003,Tablets,Portable tablets,True,2026-07-02,admin,2026-07-15,admin
+CAT004,Monitors,Computer displays,True,2026-07-02,admin,2026-07-14,admin
+CAT005, accessories ,Computer and mobile accessories,True,2026-07-03,admin,2026-07-15,admin
+CAT006,Networking,Networking equipment,True,2026-07-03,admin,2026-07-15,admin

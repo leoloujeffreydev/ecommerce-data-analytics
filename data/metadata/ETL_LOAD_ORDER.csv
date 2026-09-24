@@ -1,0 +1,14 @@
+LoadOrder,TargetTable,Status
+1,commerce.customer,DONE
+2,commerce.supplier,DONE
+3,commerce.category,DONE
+4,commerce.warehouse,DONE
+5,commerce.marketing_campaign,DONE
+6,commerce.product,DONE
+7,commerce.sales_order,DONE
+8,commerce.sales_order_item,DONE
+9,commerce.payment,DONE
+10,commerce.shipment,DONE
+11,commerce.return,DONE
+12,commerce.inventory,PENDING
+13,commerce.inventory_movement,PENDING

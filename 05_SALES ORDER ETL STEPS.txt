@@ -1,0 +1,90 @@
+Yes. I checked the relevant project references before answering.
+
+The next step is Pre-ETL Dataset Inspection for the 3 Sales Order header datasets
+
+We should not start writing 07_sales_order_etl.ipynb Section 1.1 yet.
+
+First, we use:
+
+01_PRE_ETL_DATASET_INSPECTION_PROMPT_BEFORE_TRANSFORM
+Sales Order Data Dictionary
+Relationship Map
+ETL_LOAD_ORDER
+04_LJ_Dev_Commerce_Standard_ETL_Workflow
+06_product_etl.ipynb as the structural/reference notebook
+
+The Standard ETL Workflow specifically distinguishes the pre-ETL investigation/planning from the notebook workflow. Inside the actual notebook, the equivalent independent investigation is formally documented in Section 1.7 Independent Analyst Review.
+
+So our exact sequence is:
+Step 1 — NOW: Pre-ETL Dataset Inspection
+
+Inspect these three raw datasets without transforming anything:
+
+shopify_orders.csv
+amazon_orders.csv
+noon_orders.csv
+
+We will inspect them:
+
+individually first
+compare their structures
+identify source-specific differences
+identify common business fields
+check IDs and key candidates
+check Customer relationships
+check Marketing Campaign relationships
+check dates, statuses, amounts, and other business rules
+compare source columns against the Sales Order Data Dictionary
+identify what can safely be standardized
+identify what requires a business decision
+
+The project documentation confirms that Sales Order is intentionally split across Shopify, Amazon UAE, and Noon, with source-style columns that must eventually be mapped to the PostgreSQL target schema.
+
+Step 2 — Review the Pre-ETL findings
+
+We will separate findings into the four categories we established:
+
+A. Automated findings
+B. Independent analyst findings
+C. Business decisions
+D. Safe deterministic transformations
+
+No transformation happens just because something "looks inconsistent."
+
+Step 3 — Finalize the Sales Order ETL architecture
+
+Only after inspecting all three sources will we formally decide:
+
+the canonical consolidated Sales Order structure
+source-specific cleaning rules
+standardization rules
+source identification strategy, if required
+primary key strategy
+foreign-key validation approach
+consolidation method
+Step 4 — Create 07_sales_order_etl.ipynb
+
+Then we begin the locked workflow:
+
+01. EXTRACT & ANALYZE
+
+1.1 Setup
+1.2 Load Raw Dataset
+1.3 Initial Inspection
+1.4 Run Profiler
+1.5 Review Profiling Results
+1.6 Review Profiler Issues
+1.7 Independent Analyst Review
+1.8 Findings & Transformation Decisions
+
+02. CLEANING & TRANSFORMATION
+03. CLEAN CSV
+04. DATABASE-READY
+05. DATABASE-READY VALIDATION
+06. POSTGRESQL
+
+The standardized workflow remains locked; only the dataset-specific checks and transformations change for this multi-source Sales Order dataset.
+
+Therefore: our immediate next step is the Pre-ETL Dataset Inspection of the three Sales Order raw files.
+
+After that inspection is complete and validated, we create and start 07_sales_order_etl.ipynb, using 06_product_etl as the notebook structure reference—not by blindly copying its transformations.

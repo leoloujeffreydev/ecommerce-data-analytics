@@ -1,0 +1,21 @@
+SourceSystem,SourceOrderID,SourceOrderIDInternal,CustomerCode,CampaignCode,OrderDate,OrderStatus,ShipToAddress,BillToAddress,PaymentMethod,OrderGrossAmount,OrderNotes,CreatedOn,CreatedByUser,ModifiedOn,ModifiedByUser
+Shopify,SHOPIFY-SO001,SO001,C001,CAM001,2026-07-05,Completed,"Al Jafiliya, Dubai","Al Jafiliya, Dubai",Visa,3198,,2026-07-05,admin,2026-07-05,admin
+Shopify,SHOPIFY-SO002,SO002,C002,CAM004,2026-07-06,Completed,"Makati, Manila","Makati, Manila",Credit Card,2199,,2026-07-06,admin,2026-07-06,admin
+Shopify,SHOPIFY-SO003,SO003,C003,,2026-07-07,Completed,"Dubai Marina, Dubai","Dubai Marina, Dubai",Cash on Delivery,1399,,2026-07-07,admin,2026-07-07,admin
+Shopify,SHOPIFY-SO004,SO004,C004,CAM001,2026-07-08,Shipped,"Al Nahda, Dubai","Al Nahda, Dubai",Visa,4298,,2026-07-08,admin,2026-07-08,admin
+Shopify,SHOPIFY-SO005,SO005,C005,CAM002,2026-07-09,Completed,"Abu Dhabi City, Abu Dhabi","Abu Dhabi City, Abu Dhabi",Mastercard,3448,,2026-07-09,admin,2026-07-09,admin
+Shopify,SHOPIFY-SO006,SO006,C006,,2026-07-10,Pending,"Jumeirah, Dubai","Jumeirah, Dubai",Cash on Delivery,699,,2026-07-10,admin,2026-07-10,admin
+Shopify,SHOPIFY-SO007,SO007,C007,CAM002,2026-07-11,Completed,"Sharjah City, Sharjah","Sharjah City, Sharjah",Visa,3257,,2026-07-11,admin,2026-07-11,admin
+Amazon UAE,AMAZON-SO008,SO008,C008,,2026-07-12,Completed,"Deira, Dubai","Deira, Dubai",Credit Card,1599,,2026-07-12,admin,2026-07-12,admin
+Amazon UAE,AMAZON-SO009,SO009,C009,CAM001,2026-07-13,Completed,"Al Barsha, Dubai","Al Barsha, Dubai",Visa,399,,2026-07-13,admin,2026-07-13,admin
+Amazon UAE,AMAZON-SO010,SO010,C010,,2026-07-14,Cancelled,"Khalifa City, Abu Dhabi","Khalifa City, Abu Dhabi",Credit Card,449,,2026-07-14,admin,2026-07-14,admin
+Amazon UAE,AMAZON-SO011,SO011,C011,CAM004,2026-07-15,Completed,"Bur Dubai, Dubai","Bur Dubai, Dubai",Cash on Delivery,499,,2026-07-15,admin,2026-07-15,admin
+Amazon UAE,AMAZON-SO012,SO012,C012,,2026-07-16,Completed,"Ajman City, Ajman","Ajman City, Ajman",Visa,699,,2026-07-16,admin,2026-07-16,admin
+Amazon UAE,AMAZON-SO013,SO013,C013,CAM002,2026-07-17,Completed,"Business Bay, Dubai","Business Bay, Dubai",Mastercard,3298,,2026-07-17,admin,2026-07-17,admin
+Amazon UAE,AMAZON-SO014,SO014,C014,,2026-07-18,Completed,"Al Qusais, Dubai","Al Qusais, Dubai",Cash on Delivery,179,,2026-07-18,admin,2026-07-18,admin
+Noon,NOON-SO015,SO015,C015,CAM001,2026-07-19,Shipped,"Mirdif, Dubai","Mirdif, Dubai",Visa,3598,,2026-07-19,admin,2026-07-19,admin
+Noon,NOON-SO016,SO016,C001,,2026-07-20,Completed,"Al Jafiliya, Dubai","Al Jafiliya, Dubai",Visa,699,,2026-07-20,admin,2026-07-20,admin
+Noon,NOON-SO017,SO017,C002,CAM004,2026-07-21,Completed,"Makati, Manila","Makati, Manila",Credit Card,499,,2026-07-21,admin,2026-07-21,admin
+Noon,NOON-SO018,SO018,C003,,2026-07-22,Completed,"Dubai Marina, Dubai","Dubai Marina, Dubai",Mastercard,3899,,2026-07-22,admin,2026-07-22,admin
+Noon,NOON-SO019,SO019,C004,CAM002,2026-07-23,Pending,"Al Nahda, Dubai","Al Nahda, Dubai",Cash on Delivery,2199,,2026-07-23,admin,2026-07-23,admin
+Noon,NOON-SO020,SO020,C005,,2026-07-24,Completed,"Abu Dhabi City, Abu Dhabi","Abu Dhabi City, Abu Dhabi",Visa,1599,,2026-07-24,admin,2026-07-24,admin

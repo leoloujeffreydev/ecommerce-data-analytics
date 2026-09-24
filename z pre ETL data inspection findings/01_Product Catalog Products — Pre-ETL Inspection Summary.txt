@@ -1,0 +1,89 @@
+📋 Product Catalog Products — Pre-ETL Inspection Summary
+
+Dataset: product_catalog_products.csv
+Rows: 15
+Columns: 15
+Dataset grain: One product per row
+Potential Primary Key: ProductCode
+
+✅ Data Quality Checks Passed
+No missing/NULL values
+No blank values
+No exact duplicate rows
+No duplicate ProductCode
+No duplicate SKU
+No negative or zero values where positive values are expected
+No products where ListPrice < UnitCost
+No invalid dates
+No mixed or ambiguous date formats
+No future dates
+No records where ModifiedOn < CreatedOn
+⚠️ Confirmed Value Cleaning Required
+1. ProductName
+
+One record contains leading/trailing whitespace:
+
+P0002 → " Lenovo IdeaPad 5 "
+
+Required action: Trim surrounding whitespace.
+
+2. SKU
+
+One record contains leading/trailing whitespace:
+
+P0009 → " MON-001 "
+
+Required action: Trim surrounding whitespace.
+
+🚨 Confirmed Datatype Transformations Required
+
+This was the important addition to our workflow.
+
+The date values themselves are valid, but they are currently stored as object datatype.
+
+3. CreatedOn
+Current datatype: object
+Required working datatype: datetime
+
+Required action: Convert to datetime.
+
+4. ModifiedOn
+Current datatype: object
+Required working datatype: datetime
+
+Required action: Convert to datetime.
+
+🔵 Reviewed but Should NOT Be Changed
+
+These were checked and are not data-quality issues:
+
+All ActiveFlag values are True
+Same CreatedOn value across records
+Same ModifiedOn value across records
+Same audit user values (CreatedByUser, ModifiedByUser)
+Repeated CategoryCode values
+Repeated SupplierCode values
+Valid prices, weights, and warranty values
+🔑 Important Relationship Note
+
+CategoryCode and SupplierCode are structurally valid.
+
+Their actual relationship/existence against parent tables should be validated later through:
+
+Foreign key review
+Referential integrity validation
+Database load dependency checks
+
+We should not modify those source values during cleaning.
+
+📌 Final Approved Transformation Requirements
+Column	Action
+ProductName	Trim leading/trailing whitespace
+SKU	Trim leading/trailing whitespace
+CreatedOn	Convert object → datetime
+ModifiedOn	Convert object → datetime
+Current Status
+
+🟢 Pre-ETL Inspection Complete
+
+Next, we proceed with the Product ETL notebook workflow, using these findings as our independent reference and ensuring the notebook independently checks them again before transformation.

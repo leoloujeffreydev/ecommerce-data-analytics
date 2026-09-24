@@ -1,0 +1,15 @@
+ShipmentReference,SourceOrderReference,DispatchWarehouseCode,DispatchDate,Courier,TrackingNo,TrackingStatus,DeliveredDate,DeliveryNotes,CreatedOn,CreatedByUser,ModifiedOn,ModifiedByUser
+SH001,SO001,WH001,2026-07-06,DHL,TRK001,Delivered,2026-07-07,Complete,2026-07-05,admin,2026-07-07,admin
+SH002,SO002,WH001,2026-07-07,Aramex,TRK002,Delivered,2026-07-08,Complete,2026-07-06,admin,2026-07-08,admin
+SH003,SO003,WH002,2026-07-08,FedEx,TRK003,Delivered,2026-07-09,Complete,2026-07-07,admin,2026-07-09,admin
+SH004,SO004,WH001,2026-07-09,DHL,TRK004,Delivered,2026-07-10,Complete,2026-07-08,admin,2026-07-10,admin
+SH005,SO005,WH002,2026-07-10,Aramex,TRK005,Delivered,2026-07-11,Complete,2026-07-09,admin,2026-07-11,admin
+SH006,SO007,WH001,2026-07-12,DHL,TRK006,Delivered,2026-07-13,Complete,2026-07-11,admin,2026-07-13,admin
+SH007,SO008,WH001,2026-07-13,FedEx,,Delivered,2026-07-14,Tracking unavailable,2026-07-12,admin,2026-07-14,admin
+SH008,SO009,WH003,2026-07-14,Aramex,TRK008,Delivered,2026-07-15,Complete,2026-07-13,admin,2026-07-15,admin
+SH009,SO011,WH002,2026-07-16,DHL,TRK009,Delivered,2026-07-17,Complete,2026-07-15,admin,2026-07-17,admin
+SH010,SO012,WH001,2026-07-17,FedEx,TRK010,Delivered,2026-07-18,Complete,2026-07-16,admin,2026-07-18,admin
+SH011,SO013,WH001,2026-07-18,DHL,TRK011,Delivered,2026-07-19,Complete,2026-07-17,admin,2026-07-19,admin
+SH012,SO014,WH003,2026-07-19,Aramex,,Delivered,2026-07-20,Tracking unavailable,2026-07-18,admin,2026-07-20,admin
+SH013,SO015,WH001,2026-07-20,DHL,TRK013, in transit ,,In transit,2026-07-19,admin,2026-07-20,admin
+SH014,SO016,WH001,2026-07-21,FedEx,TRK014,Delivered,2026-07-22,Complete,2026-07-20,admin,2026-07-22,admin

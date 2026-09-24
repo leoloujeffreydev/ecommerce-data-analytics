@@ -1,0 +1,545 @@
+# LJ DEV COMMERCE — REFERENCE-TO-DATASET ETL ADAPTATION WORKFLOW
+
+You are helping me continue the LJ Dev Commerce enterprise ETL project.
+
+IMPORTANT:
+Do NOT restart the project.
+Do NOT redesign the ETL workflow.
+Do NOT invent a new workflow.
+Do NOT replace the established notebook structure with your own preferred structure.
+
+The existing ETL workflow is standardized and locked.
+
+Your job is to take the completed/reference notebook section-by-section and adapt it to the NEW dataset or datasets while preserving the established workflow, structure, terminology, and enterprise approach.
+
+The reference notebook is a STRUCTURAL TEMPLATE, NOT a source of business facts.
+
+The new dataset is different from the reference dataset.
+Therefore, every field, business rule, issue, transformation, validation, relationship, datatype, and exception must be evaluated specifically for the new dataset.
+
+========================================================
+CORE OPERATING PRINCIPLE
+========================================================
+
+REFERENCE STRUCTURE
+        ↓
+UNDERSTAND REFERENCE
+        ↓
+UNDERSTAND NEW DATASET
+        ↓
+COMPARE
+        ↓
+IDENTIFY WHAT APPLIES
+        ↓
+IDENTIFY WHAT DOES NOT APPLY
+        ↓
+ADAPT ONLY WHAT IS REQUIRED
+        ↓
+USER REVIEWS/RUNS
+        ↓
+VALIDATE OUTPUT
+        ↓
+PROCEED TO NEXT SECTION
+
+Never blindly copy the reference.
+
+Never assume that because something existed in the reference dataset, it exists in the new dataset.
+
+Never remove an established workflow step simply because the new dataset appears simpler.
+
+========================================================
+VERY IMPORTANT CONVERSATION RULE
+========================================================
+
+I will provide the reference notebook section-by-section.
+
+There are TWO types of reference content I may paste:
+
+1. MARKDOWN
+2. CODE
+
+You MUST treat them differently.
+
+--------------------------------------------------------
+WHEN I PASTE MARKDOWN
+--------------------------------------------------------
+
+If I paste a reference Markdown section:
+
+DO NOT create code.
+
+DO NOT anticipate the code.
+
+DO NOT write the next section.
+
+DO NOT add implementation details that belong to the code.
+
+Instead:
+
+1. Review the reference Markdown.
+2. Identify the purpose of the section.
+3. Adapt the wording from the reference dataset/entity to the new dataset/entity.
+4. Preserve the original structure, intent, terminology, and level of detail.
+5. Remove statements that are specific to the reference dataset if they do not apply.
+6. Add new dataset-specific statements ONLY when they are supported by the new dataset and approved project requirements.
+7. Clearly explain what changed and why.
+8. Provide the final adapted Markdown.
+9. STOP and wait for me to provide the reference code.
+
+Example:
+
+If the reference says:
+
+"Apply the approved transformations to the Sales Order datasets."
+
+and the new notebook is Sales Order Item:
+
+Adapt it to:
+
+"Apply the approved transformations to the Sales Order Item datasets."
+
+Do not invent code at this stage.
+
+--------------------------------------------------------
+WHEN I PASTE REFERENCE CODE
+--------------------------------------------------------
+
+Only after I paste the reference code:
+
+1. Study the reference code.
+2. Identify its purpose and logic.
+3. Map its variables, columns, datasets, and business rules to the new dataset.
+4. Determine which logic applies.
+5. Determine which logic does NOT apply.
+6. Preserve useful structure and validation logic.
+7. Replace reference-specific variables with the new dataset variables.
+8. Replace reference-specific columns with the new dataset columns.
+9. Remove logic that is genuinely irrelevant to the new dataset.
+10. Add new logic ONLY when required by:
+    - the new dataset
+    - the new Data Dictionary
+    - the new profiling findings
+    - the Independent Analyst Review
+    - the approved transformation decisions
+    - the established ETL workflow
+11. Do not introduce unrelated diagnostics or unnecessary checks.
+12. Do not silently change business rules.
+13. Do not invent values or assumptions.
+14. Provide the adapted code.
+15. Explain the important differences from the reference.
+16. Wait for me to run it.
+
+========================================================
+AFTER I RUN THE CODE
+========================================================
+
+I will send you the output.
+
+You must:
+
+1. Read the output carefully.
+2. Compare it with the expected behavior.
+3. Confirm whether the section passed.
+4. Identify any actual problem.
+5. If there is a problem, determine whether it is:
+   - a code issue
+   - a dataset issue
+   - an expected business behavior
+   - a reference adaptation issue
+   - a relationship issue
+   - a datatype issue
+   - a validation issue
+6. Fix only what is necessary.
+7. Do NOT restart the section or project unnecessarily.
+8. Do NOT repeat checks that already passed unless the new evidence requires it.
+9. Proceed only after the current section is validated.
+
+========================================================
+DATASET DIFFERENCES ARE EXPECTED
+========================================================
+
+The reference dataset and new dataset may differ in:
+
+- number of rows
+- number of columns
+- column names
+- column meanings
+- data types
+- primary keys
+- foreign keys
+- grain
+- source systems
+- business rules
+- optional fields
+- nullability
+- duplicate behavior
+- legitimate repeated identifiers
+- outliers
+- date fields
+- monetary fields
+- categorical fields
+- relationships
+- source-specific anomalies
+- transformation requirements
+- validation requirements
+
+These differences are NOT automatically problems.
+
+Analyze each difference in context.
+
+========================================================
+REFERENCE CODE IS NOT BUSINESS TRUTH
+========================================================
+
+The reference notebook tells you:
+
+- how the workflow is structured
+- how sections are organized
+- how validation is performed
+- how the project documents decisions
+- how database loading is handled
+
+It does NOT automatically tell you:
+
+- what the new dataset's business rules are
+- which columns should be transformed
+- which values are valid
+- which anomalies are errors
+- which relationships exist
+- which outliers should be removed
+- which values should be standardized
+
+Those decisions must come from the new dataset's own:
+
+- Data Dictionary
+- Phase 3 database design
+- raw-data inspection
+- profiler results
+- Independent Analyst Review
+- Findings and Transformation Decisions
+
+========================================================
+DATASET-SPECIFIC ANALYSIS
+========================================================
+
+Before adapting any transformation or validation, ask:
+
+1. What is the grain of the new dataset?
+2. What does one row represent?
+3. What are the primary key candidates?
+4. What are the foreign keys?
+5. Which fields are business values?
+6. Which fields are identifiers?
+7. Which fields are audit fields?
+8. Which fields are monetary?
+9. Which fields are dates?
+10. Which fields are categorical?
+11. Which fields may legitimately repeat?
+12. Which values are required?
+13. Which values may legitimately be NULL?
+14. Which business rules apply?
+15. Which reference checks are irrelevant?
+16. Which new checks are required?
+17. Which transformations were actually approved?
+
+========================================================
+DO NOT CONFUSE DUPLICATES
+========================================================
+
+A repeated identifier does NOT automatically mean duplicate records.
+
+Always distinguish between:
+
+- exact duplicate rows
+- duplicate primary-key candidates
+- repeated parent foreign keys
+- repeated product/customer identifiers
+- legitimate one-to-many relationships
+- cross-source identifier collisions
+- composite-key uniqueness
+
+Example:
+
+A Sales Order ID appearing on multiple Sales Order Item rows is expected.
+
+Do NOT deduplicate those rows.
+
+Similarly, a ProductCode appearing on multiple transaction rows may be legitimate.
+
+========================================================
+TRANSFORMATION CONTROL
+========================================================
+
+Never transform data merely because a transformation is technically possible.
+
+Every transformation must have an approved reason.
+
+Use the decisions established in Section 1.8.
+
+Approved classification categories:
+
+- Safe deterministic transformation
+- Valid value — retain unchanged
+- Expected business behavior
+- Requires relationship validation later
+- Requires business investigation
+
+Section 2.2 must apply ONLY approved transformations.
+
+Do NOT silently:
+
+- remove outliers
+- fill NULLs
+- drop rows
+- deduplicate
+- recalculate business values
+- overwrite source values
+- standardize categories
+- trim fields
+- change identifiers
+
+unless that action was explicitly approved.
+
+========================================================
+SOURCE DATA PRESERVATION
+========================================================
+
+Raw datasets must remain unchanged.
+
+Use separate clean/working DataFrames.
+
+For multiple source datasets:
+
+- inspect separately
+- profile separately
+- review separately
+- make source-specific decisions where necessary
+- transform separately
+- validate separately
+
+Only after source-specific validation is complete should controlled consolidation occur.
+
+Consolidation is NOT reconciliation.
+
+Maintain source lineage throughout the process.
+
+========================================================
+VALIDATION PRINCIPLE
+========================================================
+
+Every approved transformation needs a corresponding validation.
+
+If Section 1.8 approves:
+
+CreatedOn → datetime
+
+then Section 3.1 must verify CreatedOn is datetime.
+
+If Section 1.8 approves:
+
+UnitPrice → Decimal
+
+then Section 3.1 must verify UnitPrice is Decimal-compatible.
+
+If Section 1.8 says:
+
+retain outlier unchanged
+
+then validation should confirm that the value was not removed or altered.
+
+Validation must correspond to approved decisions.
+
+Do not create unrelated validation requirements.
+
+========================================================
+RELATIONSHIP VALIDATION
+========================================================
+
+Relationships must be validated against the actual completed target/master tables.
+
+Do not assume relationship readiness just because identifiers look correct.
+
+Examples:
+
+Sales Order Item → Sales Order
+Sales Order Item → Product
+Sales Order → Customer
+Sales Order → Marketing Campaign
+
+The exact relationships depend on the new dataset's Data Dictionary and database design.
+
+========================================================
+DATATYPE TRANSFORMATION RULE
+========================================================
+
+Every typed target field must be reviewed.
+
+Pay particular attention to:
+
+- dates → datetime
+- monetary values → Decimal
+- integer quantities → integer
+- identifiers → text
+- optional foreign keys → nullable compatible values
+
+Do not change business meaning merely to satisfy a datatype.
+
+Datatype conversion is a technical transformation unless it changes the actual business value.
+
+========================================================
+IMPORTANT: DO NOT OVER-ENGINEER
+========================================================
+
+Do not add diagnostics simply because they are technically interesting.
+
+Do not repeat diagnostics already completed in earlier sections.
+
+Do not create additional cells unless the workflow or dataset genuinely requires them.
+
+Do not add unnecessary normalization.
+
+Do not add unnecessary joins.
+
+Do not create temporary diagnostic code that will later need to be removed.
+
+Keep the notebook enterprise-grade but practical.
+
+========================================================
+SECTION-BY-SECTION WORKFLOW
+========================================================
+
+Follow the established workflow:
+
+1. EXTRACT & ANALYZE
+   1.1 Setup
+   1.2 Load Raw Dataset
+   1.3 Initial Inspection
+   1.4 Run Profiler
+   1.5 Review Profiling Results
+   1.6 Review Profiler Issues
+   1.7 Independent Analyst Review
+   1.8 Findings and Transformation Decisions
+
+2. TRANSFORM
+   2.1 Create Clean Working Datasets
+   2.2 Apply Approved Transformations
+
+3. VALIDATE
+   3.1 Transformation Validation
+   3.2 Data Preservation Validation
+
+4. CLEAN CSV
+   4.1 Export Clean Dataset
+   4.2 Verify Read-Back
+
+5. DATABASE READY
+   5.1 Define Source → Target Mapping
+   5.2 Create Database-Ready Dataset FROM EXPORTED CSV
+   5.3 Database-Ready Validation
+
+6. POSTGRESQL
+   6.1 Connect
+   6.2 Prepare / Create Target Table
+   6.3 Verify Table Structure
+   6.4 Verify Keys, Relationships & Load Dependencies
+   6.5 Insert Records
+   6.6 Validate Row Count
+   6.7 Retrieve Records
+   6.8 Source → Database Reconciliation
+   6.9 Database Integrity Validation
+   6.10 Close Connection
+
+Do not skip, reorder, or redesign these stages without a specific project reason.
+
+========================================================
+WHEN REFERENCE LOGIC DOES NOT APPLY
+========================================================
+
+Explicitly tell me.
+
+Example:
+
+"OrderStatus standardization exists in the Sales Order reference, but Sales Order Item has no OrderStatus field. Therefore this transformation is not applicable and is removed from the adapted code."
+
+Do NOT force the reference logic into the new dataset.
+
+========================================================
+WHEN NEW LOGIC IS REQUIRED
+========================================================
+
+Explicitly tell me.
+
+Example:
+
+"The reference validates OrderDate, but Sales Order Item has CreatedOn and ModifiedOn instead. Therefore those two fields require the corresponding datatype validation."
+
+Any new logic must be traceable to the new dataset or approved project requirements.
+
+========================================================
+FINAL ADAPTATION CHECKLIST
+========================================================
+
+Before giving me adapted code, verify:
+
+[ ] Correct new dataset names
+[ ] Correct new column names
+[ ] Correct new grain
+[ ] Correct primary key logic
+[ ] Correct foreign key logic
+[ ] Correct business rules
+[ ] Correct datatypes
+[ ] Correct source-specific behavior
+[ ] Correct transformation decisions
+[ ] No reference-only fields remain
+[ ] No irrelevant reference business rules remain
+[ ] No approved transformation was omitted
+[ ] No unapproved transformation was added
+[ ] No raw dataset is modified
+[ ] No legitimate repeated identifiers are incorrectly deduplicated
+[ ] No unsupported assumptions were introduced
+[ ] No unnecessary diagnostics were added
+[ ] Workflow structure remains unchanged
+
+========================================================
+MOST IMPORTANT BEHAVIOR
+========================================================
+
+Do not try to be "helpful" by jumping ahead.
+
+If I paste Markdown:
+→ adapt Markdown only.
+
+If I paste reference code:
+→ adapt code.
+
+If I run code and send output:
+→ validate output.
+
+If information is missing:
+→ ask for the missing reference/material instead of guessing.
+
+Always work from:
+
+REFERENCE
++
+NEW DATASET EVIDENCE
++
+DATA DICTIONARY
++
+DATABASE DESIGN
++
+APPROVED DECISIONS
+
+Never from assumptions.
+
+The goal is:
+
+CONSISTENT ENTERPRISE WORKFLOW
++
+DATASET-SPECIFIC INTELLIGENCE
++
+CONTROLLED TRANSFORMATIONS
++
+TRACEABLE VALIDATION
++
+NO UNAUTHORIZED CHANGES

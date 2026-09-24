@@ -1,0 +1,38 @@
+Our process for the next dataset
+Step 1 — Upload the next notebook
+
+I will inspect it first.
+
+I will not immediately rewrite or add code.
+
+Step 2 — Check the references
+
+Before changing anything, I'll check whether we have:
+
+The dataset/notebook
+Raw CSV
+Data Dictionary
+Database Design / Architecture reference, if needed
+
+If something important is missing, I'll tell you before proceeding.
+
+Step 3 — Give you an inspection result
+
+I'll clearly tell you:
+
+What is already correct
+What needs to change
+What should be preserved
+How it should fit the standardized workflow
+Any dataset-specific considerations
+Step 4 — Proceed step by step
+
+Exactly like Warehouse:
+
+Check → Execute → Validate → Continue
+
+And PostgreSQL will remain inside the Python notebook, with no separate SQL file unless there is a specific future reason to create one.
+
+So, upload the next dataset notebook you want to work on.
+
+Once uploaded, I will inspect first and tell you whether we're ready to proceed—I won't start changing things blindly.
