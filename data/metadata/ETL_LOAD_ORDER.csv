@@ -10,5 +10,5 @@ LoadOrder,TargetTable,Status
 9,commerce.payment,DONE
 10,commerce.shipment,DONE
 11,commerce.return,DONE
-12,commerce.inventory,PENDING
-13,commerce.inventory_movement,PENDING
+12,commerce.inventory,DONE
+13,commerce.inventory_movement,DONE

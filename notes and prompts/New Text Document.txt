@@ -1,0 +1,95 @@
+LJ Dev Commerce — Data Quality Issues Retained / Documented
+1. Sales Order — Amazon SO013 statistical outlier
+Dataset: Sales Order
+Record: SO013
+Issue: OrderGrossAmount = AED 3,298 was identified as a statistical outlier candidate.
+Calculated upper boundary: AED 2,236.50
+Assessment: Statistical outlier detection alone did not establish that the amount was incorrect.
+Decision: Retain unchanged
+Action: No correction or removal.
+Documentation: Explicit retention validation was added for SO013.
+
+Status: ✅ Retained as valid source value / documented exception.
+
+2. Sales Order — SO005 / SO007 campaign temporal exceptions
+
+The Sales Order ETL documented temporal exceptions involving CAM002 and validated that the affected source values were retained.
+
+Records: SO005, SO007
+Issue: Campaign/date relationship required review.
+Assessment: The source values were retained rather than artificially changing the historical transaction.
+Decision: Retain source values unchanged
+Action: Explicit retention validation was included in the ETL.
+
+Status: ✅ Retained / documented.
+
+3. Sales Order — SO007 payment reconciliation exception
+Record: SO007
+Issue: Payment reconciliation exception involving the order total.
+Assessment: The discrepancy was documented rather than silently altering the Sales Order amount.
+Decision: Retain source OrderGrossAmount
+Action: Explicit retention validation was included.
+
+Status: ✅ Retained / documented.
+
+4. Inventory Movement — INM026 missing parent IN020
+
+This is the current unresolved issue.
+
+Dataset: Inventory Movement
+Record: INM026
+InventoryRecordID: IN020
+Problem: IN020 does not exist in the Inventory source.
+Trace performed:
+
+INM026
+→ SO013
+→ Shipment SH011
+→ WH001
+→ SO013 contains P0007 and P0009
+
+Available Inventory records are:
+
+P0007 + WH001 → IN007
+P0009 + WH001 → IN009
+
+There is no source field that definitively tells us whether INM026 should reference IN007 or IN009.
+
+Decision: Do not guess
+Do not: replace IN020, delete INM026, or fabricate a relationship.
+Classification: C — Business/Data Decision Required
+Current status: Unresolved referential-integrity exception
+
+The database design confirms that Inventory Movement is supposed to reference Inventory, and Inventory Movement is historical/audit data that should not simply be deleted.
+
+Status: ⚠️ Unresolved / documented exception.
+
+Important: not all of these are the same type of issue
+
+For your system record, I would classify them like this:
+
+Dataset	Record	Finding	Decision	Status
+Sales Order	SO013	Statistical outlier	Retain unchanged	✅ Resolved/documented
+Sales Order	SO005	CAM002 temporal exception	Retain source values	✅ Resolved/documented
+Sales Order	SO007	Payment reconciliation exception	Retain source value; document discrepancy	✅ Resolved/documented
+Inventory Movement	INM026	Missing parent IN020	Do not invent replacement	⚠️ Unresolved
+One important distinction
+
+The following were technical transformation requirements, not business/data-quality exceptions:
+
+String/object dates → datetime
+Numeric fields → database-compatible numeric/decimal types
+Whitespace cleanup where explicitly approved
+Standardized categorical values where an observed source variant was confirmed
+
+Those should be recorded under Transformation Decisions, not under "Data Quality Issues Retained."
+
+For example, Inventory had the observed " in stock " variant, which was standardized to In Stock; that was a resolved data-quality issue, not something we retained unchanged.
+
+Current master record
+
+You can record the current state as:
+
+LJ Dev Commerce ETL Data Quality Register: Several source-data anomalies and exceptions were identified during pre-ETL inspection and independent analyst review. Where evidence confirmed that source values were valid or could not be safely corrected, the values were intentionally retained and documented rather than altered. Documented retained exceptions include the Amazon SO013 statistical outlier, Sales Order temporal/campaign exceptions involving SO005/SO007, and the SO007 payment reconciliation exception. The current Inventory Movement dataset contains one unresolved referential-integrity exception: INM026 references non-existent Inventory record IN020. Cross-dataset tracing through SO013, Sales Order Items, and Shipment data did not provide sufficient evidence to determine the correct Inventory parent, so no replacement was invented.
+
+That is the version I would keep as the official project record.

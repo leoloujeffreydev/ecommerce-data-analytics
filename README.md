@@ -132,6 +132,8 @@ Each dataset follows a controlled ETL lifecycle.
 - Reconcile source against database
 - Perform database integrity validation
 
+> **ETL implementation status:** The standardized ETL workflow has now been completed across the project's current datasets. Inventory Movement is retained with a documented PostgreSQL load dependency exception rather than bypassing referential integrity.
+
 ---
 
 ## 📊 ETL Progress
@@ -149,10 +151,10 @@ Each dataset follows a controlled ETL lifecycle.
 | Payment | ✅ | ✅ | ✅ | Completed |
 | Shipment | ✅ | ✅ | ✅ | Completed |
 | Return | ✅ | ✅ | ✅ | Completed |
-| Inventory | 🔄 | — | — | Pending |
-| Inventory Movement | 🔄 | — | — | Pending |
+| Inventory | ✅ | ✅ | ✅ | Completed |
+| Inventory Movement | ⚠️ | ⛔ | ⚠️ | ETL completed; PostgreSQL load blocked by documented dependency exception |
 
-> **Current focus:** completing the remaining inventory-related ETL datasets before moving into the SQL analytics and Power BI stages.
+> **Current focus:** completing PostgreSQL-wide validation and finalizing the analytics layer before moving into SQL analytics and Power BI.
 
 ---
 
@@ -366,19 +368,42 @@ The project owner personally runs and validates generated code, reviews transfor
 - Payment ETL
 - Shipment ETL
 - Return ETL
-- PostgreSQL loading
+- Inventory ETL
+- Inventory Movement ETL
+- PostgreSQL loading for validated datasets
 - Database validation
 - Source-to-database reconciliation
 - GitHub repository setup
 
+### ⚠️ Documented Data / Database Exception
+
+- Inventory Movement record **INM026** references InventoryRecordID **IN020**, which is not present in the completed Inventory dataset.
+- The Inventory Movement PostgreSQL load was therefore intentionally blocked by the enforced foreign key constraint.
+- The source, clean CSV, and database-ready Inventory Movement dataset retain all **26 records**; no source record was deleted, reassigned, or modified to bypass the dependency.
+- The unresolved relationship remains documented for later review.
+
 ### 🔄 In Progress
 
-- Inventory ETL
-- Inventory Movement ETL
+- PostgreSQL-wide database validation
 - SQL analytics layer
 - Analytical SQL queries
 - Power BI data model
 - Executive dashboard
+
+---
+
+## 🔎 Current Next Phase
+
+The ETL implementation is complete for the current project scope. The next stage is to validate the PostgreSQL platform as a whole before building the analytics layer.
+
+Planned next steps:
+
+1. PostgreSQL-wide validation
+2. Cross-table referential integrity and reconciliation
+3. SQL analytics layer
+4. Power BI data model
+5. Executive dashboard
+6. Final portfolio documentation
 
 ---
 

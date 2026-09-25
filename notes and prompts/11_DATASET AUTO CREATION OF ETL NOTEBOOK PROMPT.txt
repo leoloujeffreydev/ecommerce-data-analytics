@@ -1,0 +1,33 @@
+DATASET AUTO CREATION OF ETL NOTEBOOK PROMPT
+
+we can now proceed to ETL of: zoho_inventory_movements
+
+ETL FILE NAME: 13_inventory_movement_etl.ipynb
+
+ATTACHED:
+
+1. raw data: zoho_inventory_movements.csv
+2. data dictionary: 4_Enterprise_Database_Design_Phase_3_Summary_Part_4_LJ_Dev_Commerce
+3. reference notebook: 12_inventory_etl
+4. SOURCE_TO_TARGET_MAPPING
+5. RELATIONSHIP_MAP
+6. ETL_LOAD_ORDER
+7. 04_LJ_Dev_Commerce_Standard_ETL_Workflow
+8. 06_LJ_Dev_Commerce_Standard_ETL_Workflow_Multiple_Datasets
+9. 07_REFERENCE-TO-DATASET ETL ADAPTATION WORKFLOW
+10. 10_LJ DEV COMMERCE — FINAL ETL NOTEBOOK GENERATION PROMPT
+
+FILE PATHS:
+
+raw data path: C:\JEP\DATA ANALYST PORTFOLIO\ecommerce-data-analytics\data\04_Zoho_Inventory
+raw data name: zoho_inventory_movements.csv
+
+clean raw data path: C:\JEP\DATA ANALYST PORTFOLIO\ecommerce-data-analytics\data\04_Zoho_Inventory\clean
+clean raw data name: zoho_inventory_movements_clean.csv
+
+
+
+PLEASE TELL ME IF I MISS ANY IMPORTANT FILE REFERENCE OR DEPENDENCIES SO I CAN UPLOAD
+AVOID ISSUE, ENSURE CORRECTNESS, DO NOT WASTE TIME. FOLLOW ATTAHCED FILE REFERENCES
+
+DO: 10_LJ DEV COMMERCE — FINAL ETL NOTEBOOK GENERATION PROMPT

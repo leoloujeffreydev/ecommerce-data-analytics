@@ -1,0 +1,26 @@
+12_PRE ETL DATASET INSPECTION PROMPT
+
+we now proceed with dataset: zoho_inventory_movements
+ 
+
+ATTACHED:
+
+0. 01_PRE_ETL_DATASET_INSPECTION_PROMPT_BEFORE_TRANSFORM
+1. raw data: zoho_inventory_movements.csv
+2. data dictionary: 4_Enterprise_Database_Design_Phase_3_Summary_Part_4_LJ_Dev_Commerce
+4. SOURCE_TO_TARGET_MAPPING
+5. RELATIONSHIP_MAP
+6. ETL_LOAD_ORDER
+
+FILE PATHS:
+
+raw data path: C:\JEP\DATA ANALYST PORTFOLIO\ecommerce-data-analytics\data\04_Zoho_Inventory
+
+raw data name: zoho_inventory_movements.csv
+
+
+PLEASE TELL ME IF I MISS ANY IMPORTANT FILE REFERENCE OR DEPENDENCIES SO I CAN UPLOAD
+AVOID ISSUE, ENSURE CORRECTNESS, DO NOT WASTE TIME. FOLLOW ATTACHED FILE REFERENCES
+
+CHECK ID IT IS SAFE TO PROCEED THEN DO what is stated in prompt: 01_PRE_ETL_DATASET_INSPECTION_PROMPT_BEFORE_TRANSFORM,
+

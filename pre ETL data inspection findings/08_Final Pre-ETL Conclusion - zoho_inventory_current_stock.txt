@@ -1,0 +1,185 @@
+12. Final Pre-ETL Conclusion
+Confirmed issues
+
+1 issue:
+
+StockStatus has inconsistent capitalization.
+Required datatype transformations
+
+3 fields:
+
+LastUpdatedAt
+CreatedOn
+ModifiedOn
+No issues found with
+Missing values
+Duplicate rows
+Duplicate IDs
+Product/warehouse combinations
+Numeric negatives
+Available stock calculation
+Date validity
+Date relationships
+Identifier formatting
+Items to preserve
+ReorderPoint = 10
+Current stock values
+Reserved stock values
+Available stock values
+Product IDs
+Warehouse IDs
+Audit users
+Source dates/timestamps
+Low Stock status values
+Status:
+
+🟢 READY FOR TRANSFORMATION DECISIONS
+
+We have completed the 01_PRE_ETL_DATASET_INSPECTION analysis without modifying the raw data.
+
+
+
+Inventory ETL — 1.8 Transformation Decisions
+
+Based on the completed pre-ETL inspection, the following decisions are approved for the Inventory dataset.
+
+Decision 1 — StockStatus
+
+Source column: StockStatus
+
+Finding
+
+The source contains:
+
+In Stock
+in stock
+Low Stock
+
+In Stock and in stock represent the same apparent status, with only capitalization differing.
+
+Approved transformation
+in stock → In Stock
+
+Low Stock remains unchanged.
+
+Reason
+
+Standardizes the status vocabulary without changing the apparent business meaning.
+
+Validation
+
+After transformation:
+
+In Stock should contain both previously formatted variants.
+Low Stock should remain unchanged.
+No new status values should be introduced.
+Row count must remain 19.
+Decision 2 — LastUpdatedAt
+
+Source datatype: object
+
+Approved target/working datatype: datetime
+
+Approved transformation
+
+Convert LastUpdatedAt to a proper Pandas datetime datatype.
+
+Reason
+
+The values are valid timestamps, but the database target defines last_stock_update as Datetime.
+
+Validation
+All 19 values remain valid.
+No values become null.
+Date/time values remain unchanged.
+Datatype becomes datetime.
+Decision 3 — CreatedOn
+
+Source datatype: object
+
+Approved target/working datatype: datetime
+
+Approved transformation
+
+Convert CreatedOn to datetime.
+
+Reason
+
+The target created_date field is defined as Datetime.
+
+Validation
+19 valid values remain.
+No values become null.
+Original dates are preserved.
+Datatype becomes datetime.
+Decision 4 — ModifiedOn
+
+Source datatype: object
+
+Approved target/working datatype: datetime
+
+Approved transformation
+
+Convert ModifiedOn to datetime.
+
+Reason
+
+The target updated_date field is defined as Datetime.
+
+Validation
+19 valid values remain.
+No values become null.
+Original timestamps/dates are preserved.
+Datatype becomes datetime.
+Decisions — Explicitly NOT Approved for Modification
+
+The following remain unchanged:
+
+Column	Decision
+InventoryRecordID	Preserve as Text
+ProductCode	Preserve as Text
+WarehouseCode	Preserve as Text
+OnHandQty	Preserve values / Integer
+ReorderPoint	Preserve values / Integer
+ReservedQty	Preserve values / Integer
+AvailableQty	Preserve values / Integer
+CreatedByUser	Preserve as Text
+ModifiedByUser	Preserve as Text
+Specifically preserve
+ReorderPoint = 10
+
+even though it has no variation.
+
+Also preserve:
+
+AvailableQty = OnHandQty - ReservedQty
+
+because the source values are internally consistent.
+
+Final Approval Matrix
+#	Column	Action	Classification
+1	StockStatus	Standardize in stock → In Stock	Value cleaning
+2	LastUpdatedAt	Convert object → datetime	Datatype transformation
+3	CreatedOn	Convert object → datetime	Datatype transformation
+4	ModifiedOn	Convert object → datetime	Datatype transformation
+
+No other transformations are approved at this stage.
+
+Transformation sequence
+RAW DATA
+   ↓
+Create Clean DataFrame
+   ↓
+Standardize StockStatus
+   ↓
+Convert LastUpdatedAt → datetime
+   ↓
+Convert CreatedOn → datetime
+   ↓
+Convert ModifiedOn → datetime
+   ↓
+Validate transformations
+
+This is now the locked Transformation Decision Set for Inventory.
+
+Next: we can proceed to Section 2.1 — Create Clean DataFrame, using the actual reference notebook/code workflow. No transformation should be applied to the raw DataFrame itself.

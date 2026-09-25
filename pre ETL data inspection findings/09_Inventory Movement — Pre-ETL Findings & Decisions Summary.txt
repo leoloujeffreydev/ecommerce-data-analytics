@@ -1,0 +1,32 @@
+Inventory Movement — Pre-ETL Findings & Decisions Summary
+Area	Finding	Decision / Action
+Dataset	26 rows × 11 columns; one inventory movement transaction per row	Dataset structure accepted
+Primary Key	MovementID has 26 unique values	Use MovementID as PK candidate
+Required fields	No missing, empty, or whitespace-only values	Preserve all values
+Duplicates	No duplicate rows; no duplicate MovementID	No deduplication
+Movement types	Purchase, Sale, Return, Adjustment	Preserve source values
+Reference types	Purchase Order, Sales Order, Return, Adjustment	Preserve source values
+Type consistency	MovementType ↔ ReferenceType combinations are consistent	No correction
+Quantity	Range -2 to +65; signs align with movement type	Preserve quantities/signs
+Dates	All movement/audit dates are valid	Convert to datetime
+Date relationship	MovementDate ≤ CreatedOn ≤ ModifiedOn for all records	No correction
+Text / IDs	Formatting consistent; no whitespace issues	Preserve
+Multiple movements	Multiple movements can reference the same InventoryRecordID	Valid business behavior; preserve
+INM026	References InventoryRecordID = IN020, but IN020 does not exist in Inventory	Retain and document; do not invent replacement/delete record
+Cross-dataset tracing	INM026 → SO013 was traced through Sales Order, Sales Order Item and Shipment data, but evidence does not identify whether the correct parent is IN007 or IN009	Keep IN020 unchanged as an unresolved exception
+Classification A	No issues identified	None
+Classification B	MovementDate, CreatedOn, ModifiedOn are object/string datatypes	Convert to datetime
+Classification C	INM026 → IN020 unresolved FK/reference issue	Retain + document
+Classification D	IDs, quantities, movement/reference values, audit values and valid dates must be preserved	Preserve unchanged
+Final Transformation Decision
+
+Approved:
+
+MovementDate → datetime
+CreatedOn → datetime
+ModifiedOn → datetime
+Preserve all other source values.
+Preserve INM026 and IN020 exactly as provided.
+No row deletion, ID replacement, quantity correction, or invented relationship.
+
+Status: TRANSFORMATION READY, with the IN020 referential-integrity exception explicitly retained and documented.
