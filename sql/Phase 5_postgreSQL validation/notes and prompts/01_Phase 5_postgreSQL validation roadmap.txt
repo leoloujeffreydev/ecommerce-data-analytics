@@ -1,0 +1,12 @@
+sql/
+└── phase_5_postgresql_validation/
+    ├── 5.1_database_table_inventory.sql
+    ├── 5.2_database_row_counts.sql
+    ├── 5.3_table_structure_validation.sql
+    ├── 5.4_primary_key_validation.sql
+    ├── 5.5_foreign_key_validation.sql
+    ├── 5.6_referential_integrity.sql
+    ├── 5.7_cross_table_relationship_validation.sql
+    ├── 5.8_source_target_reconciliation.sql
+    ├── 5.9_business_rules_integrity.sql
+    └── 5.10_postgresql_readiness_assessment.sql

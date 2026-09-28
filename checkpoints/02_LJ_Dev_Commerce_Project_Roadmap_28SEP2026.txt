@@ -1,0 +1,72 @@
+LJ DEV COMMERCE — PROJECT ROADMAP
+Data Analyst Portfolio Project
+Last updated: 2026-09-28
+
+CURRENT STATUS
+- Phase 0 — Business Discovery: Complete
+- Phase 3 — Enterprise Database Design: Complete
+- Phase 4 — Python/Pandas ETL and PostgreSQL Implementation: Complete for current datasets, with one documented dependency exception
+- Phase 5 — PostgreSQL-Wide Validation: Validation sections 5.1–5.10 executed and documented. Status is qualified, not an unconditional readiness sign-off.
+- Phase 6 — Analytics Requirements & Reporting Design: NOT STARTED. Begin here when resuming.
+
+IMPORTANT PHASE 5 EXCEPTION
+The inventory_movement source/database-ready dataset contains 26 records, but the PostgreSQL target currently contains 0 records. Record INM026 references inventory record IN020, which is absent from the completed inventory dataset (IN001–IN019). The load was blocked to preserve the foreign-key constraint. Do not invent or substitute an inventory ID, delete the record, or bypass the foreign key. Keep this exception visible in project documentation and account for the empty target in later analytics.
+
+PHASE 6 — ANALYTICS REQUIREMENTS & REPORTING DESIGN
+Estimated time: 1–2 focused hours
+Objective: Define business questions, KPIs, dimensions, data sources, and reporting requirements before building analytical SQL and Power BI dashboards.
+
+Planned sections:
+6.1 Sales Performance Requirements — Draft presented; confirm/review when resuming.
+6.2 Profitability Requirements — Next section to start.
+6.3 Product Performance Requirements
+6.4 Customer & Sales Channel Requirements
+6.5 Inventory Performance Requirements
+6.6 KPI and Metric Definitions
+6.7 Data Source and Table Mapping
+6.8 Power BI Reporting Requirements
+
+PHASE 7 — SQL ANALYTICS
+Estimated time: 3–5 focused hours
+Build focused analytical SQL for:
+- Sales overview
+- Monthly sales trends
+- Product/category performance
+- Customer/channel performance
+- Inventory analysis
+- Profitability
+
+PHASE 8 — POWER BI SETUP
+Estimated time: 2–3 focused hours
+- Connect Power BI to PostgreSQL
+- Select analytical tables/views
+- Establish relationships
+- Create a date table
+- Create measures
+- Apply formatting
+- Perform basic model validation
+
+PHASE 9 — DASHBOARD DEVELOPMENT
+Estimated time: 3–5 focused hours
+Build 2–3 polished dashboard pages:
+- Executive Overview
+- Sales & Profitability
+- Product / Inventory Analysis
+
+PHASE 10 — FINAL VALIDATION & PORTFOLIO DOCUMENTATION
+- Validate the final analytical outputs and dashboards
+- Document assumptions, limitations, and the inventory_movement exception
+- Prepare the portfolio presentation and project documentation
+
+ESTIMATED REMAINING WORK
+Approximately 12–18 focused hours from Phase 5 closeout through final portfolio completion. This is an estimate; issues discovered during implementation may add time.
+
+WORKING PRINCIPLES
+- Build enough to demonstrate professional Data Analyst capability; avoid simulating an entire production company.
+- Do not invent mappings, data, or results.
+- Preserve source data and documented exceptions.
+- Work one section/cell at a time: provide the step, run it, review the actual output, then proceed.
+- Do not claim a query or process succeeded until its actual output has been reviewed.
+
+RESUME INSTRUCTION
+When returning, start Phase 6 at Section 6.1 by reviewing and confirming the existing draft. Then proceed to Section 6.2 — Profitability Requirements. Do not restart Phases 0–5 or redo completed ETL/validation work unless new evidence shows an actual issue.

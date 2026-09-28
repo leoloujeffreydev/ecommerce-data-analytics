@@ -1,0 +1,92 @@
+LJ DEV COMMERCE
+PHASE 6 — ANALYTICS REQUIREMENTS & REPORTING DESIGN ROADMAP
+
+Project: LJ Dev Commerce — E-commerce Data Analytics
+Phase: 6
+Estimated duration: 1–2 focused hours
+Status: Not started; begin with Section 6.1 when resuming.
+
+OBJECTIVE
+Define the business questions, KPI definitions, analytical dimensions, source tables, and reporting requirements before developing SQL analytics and Power BI dashboards.
+
+SCOPE AND SECTION ROADMAP
+
+6.1 — Sales Performance Requirements
+Status: Draft presented; review and confirm when resuming.
+- Define the sales performance objective and business questions.
+- Identify proposed sales KPIs, including gross sales, total orders, average order value, monthly sales, completed orders, and order completion rate.
+- Identify relevant dimensions such as order date, order status, customer, campaign, and sales channel (subject to source-field confirmation).
+- Identify the intended reporting visuals.
+- Confirm definitions and any assumptions before proceeding.
+
+6.2 — Profitability Requirements
+Status: Next section to start after 6.1 is confirmed.
+- Define the profitability objective and business questions.
+- Identify profit and margin measures supported by available data.
+- Review product cost and sales/discount fields before finalizing calculations.
+- Distinguish estimated profitability from verified historical profitability where cost data limitations apply.
+- Record how returns/refunds are handled only where supported by available data.
+- Identify dimensions and reporting outputs.
+
+6.3 — Product Performance Requirements
+Status: Pending.
+- Define product and category performance questions.
+- Identify relevant sales, quantity, revenue, discount, and product measures.
+- Map product/category dimensions and required source fields.
+- Define the intended analytical outputs.
+
+6.4 — Customer & Sales Channel Requirements
+Status: Pending.
+- Define customer and sales-channel questions.
+- Identify customer, order, and channel measures.
+- Confirm which channel values are available in the source data; do not infer a channel from IDs.
+- Map the required tables and fields.
+- Define the intended analytical outputs.
+
+6.5 — Inventory Performance Requirements
+Status: Pending.
+- Define inventory performance questions and measures.
+- Identify available stock, warehouse, product, and movement data.
+- Explicitly account for the inventory_movement dependency exception: 26 prepared records, 0 loaded to PostgreSQL because INM026 references missing inventory record IN020.
+- Do not treat the empty inventory_movement target as evidence of zero inventory movement.
+- Define reporting outputs that can be supported by the available data.
+
+6.6 — KPI and Metric Definitions
+Status: Pending.
+- Consolidate the KPIs from Sections 6.1–6.5.
+- Document each KPI's business meaning, calculation, grain, filters, and required fields.
+- Identify assumptions, exclusions, and known limitations.
+- Ensure KPI definitions are consistent across SQL and Power BI.
+
+6.7 — Data Source and Table Mapping
+Status: Pending.
+- Map each approved business question and KPI to PostgreSQL tables and columns.
+- Identify required joins and their keys.
+- Record any unavailable fields or data dependencies.
+- Keep unresolved data limitations visible; do not invent mappings.
+
+6.8 — Power BI Reporting Requirements
+Status: Pending.
+- Define the report pages and their intended audiences.
+- Map approved KPIs and dimensions to each report page.
+- Identify suitable visuals, slicers, and interactions.
+- Record the required model relationships and measures for the later Power BI phase.
+
+PHASE 6 COMPLETION CHECKLIST
+[ ] Sections 6.1–6.5 reviewed and approved.
+[ ] KPI definitions consolidated and documented in Section 6.6.
+[ ] KPI and question-to-table mappings documented in Section 6.7.
+[ ] Power BI reporting requirements documented in Section 6.8.
+[ ] Assumptions, exclusions, and data limitations recorded.
+[ ] Phase 6 reviewed before starting Phase 7 — SQL Analytics.
+
+WORKING APPROACH
+- Work one section at a time.
+- Review the actual schema and available fields before confirming calculations.
+- Do not invent data, field mappings, or business rules.
+- Keep metric definitions explicit and consistent.
+- Avoid overengineering; focus on requirements needed for a credible Data Analyst portfolio.
+- Do not begin Phase 7 until Phase 6 requirements have been reviewed.
+
+NEXT ACTION WHEN RESUMING
+Start Phase 6 at Section 6.1 by reviewing and confirming the existing draft. Then proceed to Section 6.2 — Profitability Requirements.

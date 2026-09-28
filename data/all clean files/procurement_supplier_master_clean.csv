@@ -1,0 +1,9 @@
+SupplierCode,SupplierName,ContactPerson,EmailAddress,PhoneNumber,StreetAddress,City,Country,ActiveFlag,CreatedOn,CreatedByUser,ModifiedOn,ModifiedByUser
+SUP001,ABC Trading LLC,John Smith,supplier1@email.com,+971 50 111 2201,Al Quoz,Dubai,UAE,True,2026-07-01,procurement_admin,2026-07-15,procurement_admin
+SUP002,TechWorld Middle East,Maria Khan,sales@techworld.ae,+971501112202,Jebel Ali,Dubai,UAE,True,2026-07-01,procurement_admin,2026-07-14,procurement_admin
+SUP003,Gulf Electronics FZCO,Ahmed Rahman,CONTACT@GULFELECTRONICS.AE,+971 50 111 2203,Dubai Silicon Oasis,Dubai,UAE,True,2026-07-02,procurement_admin,2026-07-15,procurement_admin
+SUP004,Asia Components Trading,Li Wei,asia.components@email.com,+971 50 111 2204,Deira,Dubai,UAE,True,2026-07-02,procurement_admin,2026-07-13,procurement_admin
+SUP005,Global Devices Ltd,Sarah Lee,global.devices@email.com,+971 50 111 2205,Business Bay,Dubai,UAE,True,2026-07-03,procurement_admin,2026-07-15,procurement_admin
+SUP006,Emirates IT Supplies,Omar Ali,sales@emiratesit.ae,+971 50 111 2206,Mussafah,Abu Dhabi,UAE,True,2026-07-03,procurement_admin,2026-07-15,procurement_admin
+SUP007,Nova Tech Distribution,Daniel Cruz,nova.tech@email.com,+971 50 111 2207,Sharjah Industrial Area,Sharjah,UAE,True,2026-07-04,procurement_admin,2026-07-15,procurement_admin
+SUP008,Prime Accessories Trading,Nadia Hassan,prime.acc@email.com,+971 50 111 2208,Al Qusais,Dubai,UAE,False,2026-07-05,procurement_admin,2026-07-12,procurement_admin

@@ -1,0 +1,5 @@
+ReturnReference,SourceOrderReference,SourceLineReference,ReturnDate,Reason,Status,QtyReturned,RefundAmount,ReturnNotes,CreatedOn,CreatedByUser,ModifiedOn,ModifiedByUser
+RE001,SO001,SOI021,2026-07-15,Defective,Completed,1,399.0,Refund approved,2026-07-15,admin,2026-07-16,admin
+RE002,SO005,SOI005,2026-07-16,Changed mind,Completed,1,2999.0,Customer refund,2026-07-16,admin,2026-07-17,admin
+RE003,SO013,SOI025,2026-07-22,Damaged,Approved,1,699.0,Replacement requested,2026-07-22,admin,2026-07-23,admin
+RE004,SO015,SOI026,2026-07-23,Wrong item,Pending,1,699.0,Awaiting inspection,2026-07-23,admin,2026-07-23,admin
