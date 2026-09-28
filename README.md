@@ -2,7 +2,7 @@
 
 ### Enterprise-style analytics engineering & data analytics portfolio project
 
-> 🚧 **Project Status: In Progress**
+> 🚧 **Project Status: In Progress — Phase 5 completed; Phase 6 is next**
 
 **Python · Pandas · PostgreSQL · SQL · Jupyter · Power BI · Git/GitHub**
 
@@ -132,7 +132,7 @@ Each dataset follows a controlled ETL lifecycle.
 - Reconcile source against database
 - Perform database integrity validation
 
-> **ETL implementation status:** The standardized ETL workflow has now been completed across the project's current datasets. Inventory Movement is retained with a documented PostgreSQL load dependency exception rather than bypassing referential integrity.
+> **ETL implementation status:** The standardized ETL workflow is complete for the current datasets. Inventory Movement retains a documented PostgreSQL load dependency exception; referential integrity was not bypassed.
 
 ---
 
@@ -152,9 +152,9 @@ Each dataset follows a controlled ETL lifecycle.
 | Shipment | ✅ | ✅ | ✅ | Completed |
 | Return | ✅ | ✅ | ✅ | Completed |
 | Inventory | ✅ | ✅ | ✅ | Completed |
-| Inventory Movement | ⚠️ | ⛔ | ⚠️ | ETL completed; PostgreSQL load blocked by documented dependency exception |
+| Inventory Movement | ✅ | ⛔ | ⚠️ | ETL completed; PostgreSQL load intentionally blocked by documented dependency exception |
 
-> **Current focus:** completing PostgreSQL-wide validation and finalizing the analytics layer before moving into SQL analytics and Power BI.
+> **Current status:** dataset ETL and PostgreSQL-wide validation (Sections 5.1–5.10) are complete. The Inventory Movement load exception remains documented. Phase 6, Analytics Requirements & Reporting Design, is the next phase.
 
 ---
 
@@ -355,55 +355,53 @@ The project owner personally runs and validates generated code, reviews transfor
 - Business analysis
 - Data architecture
 - Enterprise database design
-- ETL workflow standardization
-- Multiple-dataset ETL framework
-- Customer ETL
-- Supplier ETL
-- Category ETL
-- Warehouse ETL
-- Marketing Campaign ETL
-- Product ETL
-- Sales Order ETL
-- Sales Order Item ETL
-- Payment ETL
-- Shipment ETL
-- Return ETL
-- Inventory ETL
-- Inventory Movement ETL
-- PostgreSQL loading for validated datasets
-- Database validation
-- Source-to-database reconciliation
-- GitHub repository setup
+- Standardized Python / Pandas ETL for the current datasets
+- PostgreSQL implementation and loading for eligible datasets
+- PostgreSQL-wide validation, Sections **5.1–5.10**
+- Database structure, primary-key, foreign-key, and referential-integrity checks
+- Source-to-target reconciliation review
+- Phase 5 validation README and reconciliation report
+- Project roadmap and completion plan
+- GitHub repository setup and latest push (**commit `391ac17`**)
 
 ### ⚠️ Documented Data / Database Exception
 
 - Inventory Movement record **INM026** references InventoryRecordID **IN020**, which is not present in the completed Inventory dataset.
-- The Inventory Movement PostgreSQL load was therefore intentionally blocked by the enforced foreign key constraint.
-- The source, clean CSV, and database-ready Inventory Movement dataset retain all **26 records**; no source record was deleted, reassigned, or modified to bypass the dependency.
-- The unresolved relationship remains documented for later review.
+- The Inventory Movement PostgreSQL load was intentionally blocked by the enforced foreign-key constraint.
+- All **26 records** remain in the source, clean CSV, and database-ready dataset. No record was deleted, reassigned, or altered to bypass the dependency.
+- PostgreSQL-wide validation is complete, but the readiness assessment requires manual review; this is not an unconditional readiness sign-off.
+- The exception remains documented for later review.
 
-### 🔄 In Progress
+### 🔄 Next: Phase 6 — Analytics Requirements & Reporting Design
 
-- PostgreSQL-wide database validation
-- SQL analytics layer
-- Analytical SQL queries
-- Power BI data model
-- Executive dashboard
+Phase 6 has not yet started. The planned sections are:
+
+1. **6.1** Sales Performance Requirements — review and confirm
+2. **6.2** Profitability Requirements
+3. **6.3** Product Performance Requirements
+4. **6.4** Customer & Sales Channel Requirements
+5. **6.5** Inventory Performance Requirements
+6. **6.6** KPI and Metric Definitions
+7. **6.7** Data Source and Table Mapping
+8. **6.8** Power BI Reporting Requirements
+
+SQL analytics and Power BI development follow the requirements and reporting design work.
 
 ---
 
 ## 🔎 Current Next Phase
 
-The ETL implementation is complete for the current project scope. The next stage is to validate the PostgreSQL platform as a whole before building the analytics layer.
+**Phase 5 — PostgreSQL-wide Validation is complete.** Sections 5.1–5.10 have been executed and documented. The Inventory Movement dependency exception remains open, and the readiness assessment requires manual review.
 
-Planned next steps:
+The next step is **Phase 6 — Analytics Requirements & Reporting Design**, beginning with a review and confirmation of Section 6.1.
 
-1. PostgreSQL-wide validation
-2. Cross-table referential integrity and reconciliation
-3. SQL analytics layer
-4. Power BI data model
-5. Executive dashboard
-6. Final portfolio documentation
+Planned remaining work:
+
+1. Phase 6: Analytics Requirements & Reporting Design
+2. Phase 7: SQL analytics
+3. Phase 8: Power BI setup and data model
+4. Phase 9: Dashboard development
+5. Phase 10: Final validation and portfolio documentation
 
 ---
 
