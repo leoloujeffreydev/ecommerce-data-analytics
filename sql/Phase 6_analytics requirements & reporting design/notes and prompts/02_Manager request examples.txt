@@ -1,0 +1,92 @@
+Each section from 6.1 to 6.5 will represent a different business reporting need.
+
+For example:
+
+Section
+
+	
+
+Example manager request
+
+	
+
+Possible business questions
+
+
+
+
+6.1 Sales Performance
+
+	
+
+Prepare a monthly sales performance report.
+
+	
+
+What are total sales? How are sales changing monthly? How many orders are completed?
+
+
+
+
+6.2 Profitability
+
+	
+
+Prepare a report showing which sales generate profit.
+
+	
+
+What is the profit margin? Which products generate the most profit?
+
+
+
+
+6.3 Product Performance
+
+	
+
+Identify the products and categories driving sales.
+
+	
+
+Which products sell the most? Which categories generate the most revenue?
+
+
+
+
+6.4 Customer & Sales Channel
+
+	
+
+Analyze customer purchasing behavior and sales channels.
+
+	
+
+Who are the most frequent customers? Which channels generate sales, if the data supports this?
+
+
+
+
+6.5 Inventory Performance
+
+	
+
+Prepare an inventory status and movement report.
+
+	
+
+What stock is available? Which products need replenishment, if the data supports it?
+
+Recommended structure
+
+5 main reporting requests, one for each business area.
+
+Multiple business questions under each request, depending on the manager's needs.
+
+Relevant KPIs to answer those questions.
+
+One or more report pages where appropriate, rather than forcing every request into a single dashboard.
+
+These will be realistic business scenarios for your portfolio, not actual requests from a real manager. We'll also make sure that every question and KPI is supported by the available data or clearly document its limitations.
+
+This approach will demonstrate how you translate several business needs into measurable analytics and reports.
