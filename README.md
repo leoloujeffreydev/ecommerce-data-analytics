@@ -2,7 +2,7 @@
 
 ### Enterprise-style analytics engineering & data analytics portfolio project
 
-> 🚧 **Project Status: In Progress — Phase 5 completed; Phase 6 is next**
+> 🚧 **Project Status: In Progress — Phases 1–7 completed; Phase 8 is next**
 
 **Python · Pandas · PostgreSQL · SQL · Jupyter · Power BI · Git/GitHub**
 
@@ -154,7 +154,7 @@ Each dataset follows a controlled ETL lifecycle.
 | Inventory | ✅ | ✅ | ✅ | Completed |
 | Inventory Movement | ✅ | ⛔ | ⚠️ | ETL completed; PostgreSQL load intentionally blocked by documented dependency exception |
 
-> **Current status:** dataset ETL and PostgreSQL-wide validation (Sections 5.1–5.10) are complete. The Inventory Movement load exception remains documented. Phase 6, Analytics Requirements & Reporting Design, is the next phase.
+> **Current status:** dataset ETL, PostgreSQL-wide validation, analytics requirements and reporting design, and Phase 7 SQL analytics are complete. The Inventory Movement load exception remains documented. Phase 8, Power BI Setup and Data Model, is next.
 
 ---
 
@@ -230,6 +230,44 @@ Validation includes:
 - Key uniqueness
 - Referential integrity
 - Business-rule validation
+
+---
+
+## 📈 SQL Analytics — Phase 7 Results
+
+Phase 7 SQL analytics is complete. The following results were validated against the current simulated dataset. Monetary values are in AED.
+
+| Metric | Validated Result |
+|---|---:|
+| Completed orders | 15 |
+| Completed sales | AED 26,870.00 |
+| Average order value | AED 1,791.33 |
+| Sales lines | 19 |
+| Units sold | 21 |
+| Products represented in sales | 14 |
+| Customers with completed purchases | 11 |
+| Inventory records reconciled | 19 |
+| Inventory records at or below reorder level | 3 |
+| Estimated product cost | AED 21,510 |
+| Estimated gross profit | AED 5,360 |
+| Estimated gross margin | 19.95% |
+
+### Interpretation and Reconciliation Notes
+
+- Gross profit and gross margin are estimates based on available product-cost data.
+- All observed monthly sales fall in July 2026; the dataset does not support a meaningful month-over-month comparison.
+- The Completion Rate denominator and sales-channel definition remain unverified and are not presented as validated KPIs.
+- Refunds remain separate from sales until net-sales treatment is defined.
+- Estimated gross profit of AED 5,360 differs from a previous estimated benchmark of AED 7,603 by AED 2,243. The difference remains unexplained; no adjustment was made.
+- Payment `PAY008` associated with order `SO007` has a documented AED 179 difference between the Zoho payment amount (AED 3,078) and Shopify order total (AED 3,257). No authoritative allocation or receipt was available to resolve it.
+- Available stock is defined as current stock less reserved stock. Low stock is defined as available stock at or below the reorder level.
+
+### Inventory Movement Exception
+
+- The source and database-ready datasets contain 26 prepared Inventory Movement records.
+- The PostgreSQL table contains 0 loaded rows because `INM026` references inventory record `IN020`, which is absent from the completed Inventory dataset.
+- The foreign-key constraint was not bypassed. No source record was deleted, reassigned, or altered to force a load.
+- This remains a documented dependency exception, not evidence that no real-world inventory movements occurred.
 
 ---
 
@@ -360,48 +398,38 @@ The project owner personally runs and validates generated code, reviews transfor
 - PostgreSQL-wide validation, Sections **5.1–5.10**
 - Database structure, primary-key, foreign-key, and referential-integrity checks
 - Source-to-target reconciliation review
-- Phase 5 validation README and reconciliation report
+- Phase 6 — Analytics Requirements & Reporting Design
+- Phase 7 — SQL analytics
+- Phase 7 validation results and documented reconciliation findings
 - Project roadmap and completion plan
-- GitHub repository setup and latest push (**commit `391ac17`**)
+- GitHub synchronization of the Phase 7 work (commit `95a94a6`)
 
-### ⚠️ Documented Data / Database Exception
+### ⚠️ Documented Data / Database Exceptions
 
 - Inventory Movement record **INM026** references InventoryRecordID **IN020**, which is not present in the completed Inventory dataset.
 - The Inventory Movement PostgreSQL load was intentionally blocked by the enforced foreign-key constraint.
 - All **26 records** remain in the source, clean CSV, and database-ready dataset. No record was deleted, reassigned, or altered to bypass the dependency.
 - PostgreSQL-wide validation is complete, but the readiness assessment requires manual review; this is not an unconditional readiness sign-off.
-- The exception remains documented for later review.
+- Estimated gross profit is AED 5,360 compared with a previous estimated benchmark of AED 7,603. The AED 2,243 difference remains unexplained.
+- Payment `PAY008` associated with order `SO007` has a documented AED 179 difference between the Zoho payment amount and Shopify order total. It remains unresolved.
 
-### 🔄 Next: Phase 6 — Analytics Requirements & Reporting Design
+### 🔄 Next: Phase 8 — Power BI Setup and Data Model
 
-Phase 6 has not yet started. The planned sections are:
+Phase 8 is the next phase. It will establish the Power BI connection and data model, with relationships and measures validated against the completed Phase 7 SQL results.
 
-1. **6.1** Sales Performance Requirements — review and confirm
-2. **6.2** Profitability Requirements
-3. **6.3** Product Performance Requirements
-4. **6.4** Customer & Sales Channel Requirements
-5. **6.5** Inventory Performance Requirements
-6. **6.6** KPI and Metric Definitions
-7. **6.7** Data Source and Table Mapping
-8. **6.8** Power BI Reporting Requirements
+The remaining planned work is:
 
-SQL analytics and Power BI development follow the requirements and reporting design work.
+1. Phase 8: Power BI setup and data model
+2. Phase 9: Dashboard development
+3. Phase 10: Final validation and portfolio documentation
 
 ---
 
 ## 🔎 Current Next Phase
 
-**Phase 5 — PostgreSQL-wide Validation is complete.** Sections 5.1–5.10 have been executed and documented. The Inventory Movement dependency exception remains open, and the readiness assessment requires manual review.
+**Phases 1–7 are complete.** Phase 7 SQL analytics has been validated and documented. The Inventory Movement dependency exception and the identified reconciliation differences remain visible and unresolved.
 
-The next step is **Phase 6 — Analytics Requirements & Reporting Design**, beginning with a review and confirmation of Section 6.1.
-
-Planned remaining work:
-
-1. Phase 6: Analytics Requirements & Reporting Design
-2. Phase 7: SQL analytics
-3. Phase 8: Power BI setup and data model
-4. Phase 9: Dashboard development
-5. Phase 10: Final validation and portfolio documentation
+The next step is **Phase 8 — Power BI Setup and Data Model**. Dashboard development and final portfolio validation follow in Phases 9 and 10.
 
 ---
 
@@ -451,7 +479,7 @@ Key areas demonstrated:
 - Git / GitHub
 - AI-assisted development
 
-The final goal is to deliver a complete analytical workflow from **raw operational data to business intelligence reporting**.
+The goal is to deliver a complete analytical workflow from **raw operational data to business intelligence reporting**. Power BI modeling, dashboard development, and final portfolio validation remain planned work.
 
 ---
 
