@@ -3,8 +3,8 @@
 **Project:** LJ Dev Commerce --- E-commerce Data Analytics\
 **Phase:** 6\
 **Status:** **Completed --- documentation and requirements design**\
-**Next phase:** Phase 7 --- SQL Analytics\
-**Last updated:** 29 September 2026
+**Next phase:** Phase 8 --- Power BI Setup and Data Model\
+**Last updated:** 2 October 2026
 
 ------------------------------------------------------------------------
 
@@ -14,9 +14,9 @@ Phase 6 defines the business questions, KPI and metric requirements,
 analytical dimensions, PostgreSQL source mappings, and Power BI
 reporting requirements before implementation.
 
-The phase provides a documented bridge between the validated PostgreSQL
-data platform (Phase 5) and the analytical SQL and Power BI work planned
-in Phases 7--9.
+The phase provided a documented bridge between the validated PostgreSQL
+data platform (Phase 5), the completed SQL analytics work (Phase 7), and
+the Power BI implementation planned in Phases 8--10.
 
 ## 2. Phase 6 Deliverables
 
@@ -71,8 +71,10 @@ Phase 6 covers the following requirement areas:
 
 ## 4. Key Decisions and Implementation Gates
 
-The following decisions and qualifications must remain visible in
-subsequent phases.
+The following decisions and qualifications remain relevant to subsequent
+phases. Phase 7 SQL Analytics has verified the sales source and calculations
+where noted below; unresolved business definitions and data limitations
+remain implementation constraints.
 
   -----------------------------------------------------------------------------------------
   Area                                Documented decision or status
@@ -119,18 +121,33 @@ subsequent phases.
                                       source record, or bypass the foreign key.
   -----------------------------------------------------------------------------------------
 
-### Remaining KPI implementation validations
+### Phase 7 SQL validation outcomes
 
-Two KPI-related gates remain for Phase 7:
+Phase 7 validated the following KPI values against PostgreSQL:
 
-1.  **Total Sales:** verify the actual monetary field and calculation
-    grain in PostgreSQL to avoid double counting.
-2.  **Completion Rate:** define the eligible-order denominator and
-    applicable status rules before implementation.
+| Measure | Validated result |
+|---|---:|
+| Completed orders | 15 |
+| Total completed sales | AED 26,870.00 |
+| Average Order Value | AED 1,791.33 |
+| Sales lines | 19 |
+| Units sold | 21 |
+| Products represented in sales | 14 |
+| Customers with completed purchases | 11 |
+| Inventory records reconciled | 19 |
+| Inventory records at or below reorder level | 3 |
+| Estimated product cost | AED 21,510.00 |
+| Estimated gross profit | AED 5,360.00 |
+| Estimated profit margin | 19.95% |
 
-These are implementation gates, not reasons to reopen the completed
-Phase 6 documentation unless new evidence requires a documented
-correction.
+The previous estimated gross profit benchmark of AED 7,603 differs from
+the validated AED 5,360 result by AED 2,243. The original benchmark
+calculation was not available for reconciliation. The variance remains
+unresolved; no adjustment was made to force a match.
+
+The Completion Rate denominator remains undefined and must not be
+implemented until its eligible-order denominator and status rules are
+approved.
 
 ## 5. Power BI Requirements
 
@@ -148,12 +165,14 @@ implemented or tested.
 
 ## 6. Known Data Limitations
 
--   Sales monetary field and calculation grain require
-    implementation-time verification.
+-   Sales monetary field and calculation grain were validated in Phase 7;
+    preserve the distinction between order-header and line-level amounts.
 -   Completion Rate denominator is not yet defined.
 -   Sales channel is unverified and must not be inferred.
 -   Estimated Gross Profit is based on current product cost, not
-    historical cost.
+    historical cost. Phase 7 validated AED 5,360 estimated gross profit
+    and a 19.95% estimated margin; the AED 2,243 variance from the
+    earlier AED 7,603 benchmark remains unexplained.
 -   Refunds are not netted from sales without an agreed, supported rule.
 -   Inventory Movement has a documented foreign-key dependency
     exception: 26 prepared records and 0 loaded records because
@@ -167,35 +186,38 @@ documentation.
 
 Phase 6 requirements and reporting-design documentation are complete.
 The three primary deliverables have been updated, and documentation
-consistency review is closed. This is a **documentation completion
-status**, not a claim that analytical SQL, Power BI, or final acceptance
+consistency review is closed. Phase 7 SQL Analytics is also complete,
+with its validated results and unresolved limitations recorded above.
+This does not mean that Power BI implementation or final acceptance
 testing has been completed.
 
-## 8. Handover to Phase 7
+## 8. Handover to Phase 8
 
-Proceed to **Phase 7 --- SQL Analytics**. Work one query/script at a
-time:
+Proceed to **Phase 8 --- Power BI Setup and Data Model**.
 
-1.  Adapt each Phase 7 SQL script from the relevant approved Phase 6 SQL
-    reference and follow the project's established file and naming
-    conventions.
-2.  Provide one query at a time.
-3.  Wait for execution output from PostgreSQL.
-4.  Validate the actual output before proceeding to the next query.
-5.  Do not assume table structures, results, mappings, or successful
-    execution.
+Use the validated Phase 7 SQL results as the reconciliation baseline.
+Connect the required PostgreSQL sources, establish and verify the data
+model, and implement the calendar structure and measures in accordance
+with the approved Phase 6 requirements.
 
-Begin with the Total Sales source validation. Confirm the source
-monetary field and calculation grain before implementing the KPI. Keep
-the Completion Rate denominator unresolved until its definition is
-agreed.
+Carry forward the documented limitations:
+- Completion Rate denominator remains undefined.
+- Sales channel remains unverified.
+- Profitability is estimated using current product costs; the AED 2,243
+  variance from the earlier benchmark remains unresolved.
+- Inventory movement records remain unloaded because of the documented
+  foreign-key dependency exception.
+- Refunds are not netted from sales without an agreed, supported rule.
+
+Validate relationships, filter behavior, measure grain, and KPI
+reconciliation before proceeding to dashboard development.
 
 ## 9. Subsequent Project Phases
 
   Phase   Focus                                          Status
   ------- ---------------------------------------------- -------------
-  7       SQL Analytics                                  Next
-  8       Power BI setup and data model                  Not started
+  7       SQL Analytics                                  Completed
+  8       Power BI setup and data model                  Next
   9       Dashboard development                          Not started
   10      Final validation and portfolio documentation   Not started
 

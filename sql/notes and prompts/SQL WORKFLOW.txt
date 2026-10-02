@@ -1,0 +1,13 @@
+Your SQL workflow
+
+One SQL task = one complete SQL file. Include all queries for that task in a single copy-and-paste-ready script.
+
+Use the established SQL format. Include PURPOSE, TABLES, VALIDATION, WHY THIS IS NEEDED, EXPECTED RESULT and NOTE, with clearly numbered queries.
+
+One query at a time. I'll tell you exactly which query to execute, even when the file contains multiple queries.
+
+Wait for your output. I won't proceed to the next query until you provide the execution result.
+
+Validate before proceeding. I'll check your actual output against the expected results and previously validated figures.
+
+Track progress at every step. I'll report completed tasks, the current query, pending work, validation status and the next action.

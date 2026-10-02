@@ -1,0 +1,35 @@
+Phase 5 — PostgreSQL Validation
+
+Validate database structure, data and integrity.
+
+Completed with documented exception
+
+Phase 6 — Analytics Requirements & Reporting Design
+
+Manager requests → Business questions → KPIs → Data mapping → Report design
+
+Completed
+
+Phase 7 — SQL Analytics
+
+Develop queries to calculate approved KPIs and prepare reporting datasets.
+
+Completed
+
+Phase 8 — Power BI Setup
+
+Prepare the data model, relationships and measures.
+
+Current phase
+
+Phase 9 — Dashboard Development
+
+Build the reports and interactive dashboards based on approved requirements.
+
+Not started
+
+Phase 10 — Final Validation & Documentation
+
+Validate results and finalize the portfolio.
+
+Not started
